@@ -18,3 +18,11 @@
 ## Phase 2.3: LKH/TGDH Trace Adapter & Multi-Scale Trace Export (2026-11-14)
 - **Built**: Implemented `matlab_layer/exporters/TreeProtocolTraceAdapter.m` (wrapping `LKH(swarm, 3)` and `TGDH(swarm, 2)` with RNG state restoration preserving exogenous event and node-spawn parity) and `matlab_layer/experiments/runHybridTraceExport.m`. Updated `.gitignore` (`traces/runs/`) and `PLAN_CHANGELOG.md`.
 - **Tested**: Executed `runHybridTraceExport()` across all 5 protocols (`FlatSBP`, `HSBP`, `DTHSBP`, `LKH`, `TGDH`) at `N in {50, 100, 200, 250, 1000}` (`25` traces generated in `traces/runs/`, plus `5` sample fixtures in `traces/samples/events_trace_<proto>_N50.json`). Observed paired event parity (`105` events on reactive protocols vs `100-101` on batched `DTHSBP`) — **PASS**.
+- **Commit**: `2734c47`
+
+## Phase 2.4: Trace Exporter Tests, Schema Validation & Zero-Regression Gate (2026-11-14)
+- **Built**: Created `matlab_layer/tests/TestTraceExporter.m` (`5` unit/property tests covering determinism, boundary projection, membership/collateral-batch transitions, 5-protocol byte/hop semantics, and bounded `nodePositions` scoping at `N=250`) and `scripts/validate_traces.py`.
+- **Tested**:
+  - `runtests('tests/TestTraceExporter.m')`: **5/5 PASS**.
+  - `python scripts/validate_traces.py`: **30/30** exported trace JSONs + `matlab_baseline_metrics.json` schema-valid & bounded-scoping PASS.
+  - Zero-regression checks: `ExperimentSmokeTest` (**PASS**, 18/18 join, 18/18 leave), `ComparativeStochasticStudyTest` (**PASS**, 12/12 runs), and bit-for-bit `runStochasticExperiment` parity verified against untouched `./DT-HSBP` baseline (pre-existing `FullStochasticMetricsTest` `hsbpNoDTInvariant=0` discrepancy logged in `PLAN_CHANGELOG.md`).
