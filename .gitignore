@@ -3,6 +3,8 @@
 *.m~
 slprj/
 *.mex*
+matlab_layer/reports/*.md
+matlab_layer/reports/*.pdf
 
 # Large traces (keep schemas and small sample fixtures)
 traces/*.json

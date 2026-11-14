@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dt-hsbp.local/schemas/matlab_metrics_schema.json",
+  "title": "DT-HSBP MATLAB Baseline Evaluation Metrics",
+  "description": "Structured representation of Sections 1-6 from runCompleteEvaluationAndReport.m for automated cross-layer comparison.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "section1_dthsbp",
+    "section2_contribA",
+    "section3_contribB",
+    "section4_overall",
+    "section5_etaSweep",
+    "section6_batchScalability"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generatedAt", "sourceScript", "etaBaseline"],
+      "properties": {
+        "generatedAt": { "type": "string", "minLength": 1 },
+        "sourceScript": { "type": "string", "minLength": 1 },
+        "etaBaseline": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "section1_dthsbp": {
+      "type": "object",
+      "required": [
+        "swarmSizes",
+        "eta",
+        "leaveBytes",
+        "leaveMessages",
+        "leaveRekeyCount",
+        "joinBytes",
+        "joinLeaderTimeMs",
+        "leaveLeaderTimeMs",
+        "byteReductionVsHSBP",
+        "byteReductionVsFlat"
+      ],
+      "properties": {
+        "swarmSizes": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "eta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "leaveBytes": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP", "DTHSBP_ideal"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP_ideal": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "leaveMessages": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP", "DTHSBP_ideal"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP_ideal": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "leaveRekeyCount": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP", "DTHSBP_ideal"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP_ideal": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "joinBytes": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "joinLeaderTimeMs": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "leaveLeaderTimeMs": {
+          "type": "object",
+          "required": ["FlatSBP", "HSBP", "DTHSBP"],
+          "properties": {
+            "FlatSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "HSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "DTHSBP": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "byteReductionVsHSBP": { "type": "array", "items": { "type": "number" } },
+        "byteReductionVsFlat": { "type": "array", "items": { "type": "number" } }
+      }
+    },
+    "section2_contribA": {
+      "type": "object",
+      "required": [
+        "clusterSizes",
+        "batchSizes",
+        "eta",
+        "unsortedExponentiations",
+        "sortedExponentiations",
+        "unsortedTimeMs",
+        "sortedTimeMs",
+        "avgExponentiationSavingPct"
+      ],
+      "properties": {
+        "clusterSizes": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "batchSizes": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "eta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "unsortedExponentiations": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+        },
+        "sortedExponentiations": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+        },
+        "unsortedTimeMs": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+        },
+        "sortedTimeMs": {
+          "type": "array",
+          "items": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+        },
+        "avgExponentiationSavingPct": { "type": "number" }
+      }
+    },
+    "section3_contribB": {
+      "type": "object",
+      "required": [
+        "clusterSizes",
+        "eta",
+        "reactiveLeaderTimeMs",
+        "precomputedLeaderTimeMs",
+        "expectedLeaderTimeMs",
+        "latencyReductionPct",
+        "avgLatencyReductionPct",
+        "speedupFactor"
+      ],
+      "properties": {
+        "clusterSizes": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "eta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "reactiveLeaderTimeMs": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "precomputedLeaderTimeMs": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "expectedLeaderTimeMs": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "latencyReductionPct": { "type": "array", "items": { "type": "number" } },
+        "avgLatencyReductionPct": { "type": "number" },
+        "speedupFactor": { "type": "number", "minimum": 0 }
+      }
+    },
+    "section4_overall": {
+      "type": "object",
+      "required": [
+        "swarmSizeN",
+        "clusterSizeNc",
+        "eta",
+        "paradigms",
+        "communicationBytes",
+        "leaderTimeMs",
+        "keysStoredPerMember",
+        "intermediateExponentiations",
+        "commReductionVsHSBP",
+        "commReductionVsFlat",
+        "latencyReductionVsHSBP",
+        "latencyReductionVsFlat"
+      ],
+      "properties": {
+        "swarmSizeN": { "type": "integer", "minimum": 1 },
+        "clusterSizeNc": { "type": "integer", "minimum": 1 },
+        "eta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "paradigms": { "type": "array", "items": { "type": "string" } },
+        "communicationBytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "leaderTimeMs": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "keysStoredPerMember": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "intermediateExponentiations": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "commReductionVsHSBP": { "type": "number" },
+        "commReductionVsFlat": { "type": "number" },
+        "latencyReductionVsHSBP": { "type": "number" },
+        "latencyReductionVsFlat": { "type": "number" }
+      }
+    },
+    "section5_etaSweep": {
+      "type": "object",
+      "required": [
+        "clusterN",
+        "eta",
+        "dtHsbpBytes",
+        "dtHsbpMessages",
+        "hsbpBytes",
+        "lkhBytes",
+        "baselineEta",
+        "baselineDtBytes",
+        "baselineSavingVsHSBP",
+        "baselineSavingVsLKH"
+      ],
+      "properties": {
+        "clusterN": { "type": "integer", "minimum": 1 },
+        "eta": { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 1 } },
+        "dtHsbpBytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "dtHsbpMessages": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "hsbpBytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "lkhBytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "baselineEta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "baselineDtBytes": { "type": "number", "minimum": 0 },
+        "baselineSavingVsHSBP": { "type": "number" },
+        "baselineSavingVsLKH": { "type": "number" }
+      }
+    },
+    "section6_batchScalability": {
+      "type": "object",
+      "required": ["clusterN", "mValues", "DT_HSBP", "HSBP", "LKH"],
+      "properties": {
+        "clusterN": { "type": "integer", "minimum": 1 },
+        "mValues": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "DT_HSBP": {
+          "type": "object",
+          "required": ["messages", "bytes", "leaderMs"],
+          "properties": {
+            "messages": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "bytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "leaderMs": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "HSBP": {
+          "type": "object",
+          "required": ["messages", "bytes", "leaderMs"],
+          "properties": {
+            "messages": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "bytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "leaderMs": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        },
+        "LKH": {
+          "type": "object",
+          "required": ["messages", "bytes", "leaderMs"],
+          "properties": {
+            "messages": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "bytes": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+            "leaderMs": { "type": "array", "items": { "type": "number", "minimum": 0 } }
+          }
+        }
+      }
+    }
+  }
+}

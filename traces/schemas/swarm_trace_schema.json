@@ -1,0 +1,166 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dt-hsbp.local/schemas/swarm_trace_schema.json",
+  "title": "DT-HSBP Hybrid Workflow Swarm Trace",
+  "description": "Deterministic event, bounded 2D mobility, cluster membership, and cryptographic-cost trace exported from MATLAB for wireless network replay.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "initialNodes", "events"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed",
+        "swarmSize",
+        "numClusters",
+        "protocol",
+        "simulationTime",
+        "timeStep",
+        "arenaWidthM",
+        "arenaHeightM",
+        "maxVelocityMps",
+        "keySize",
+        "headerSize",
+        "controlSize",
+        "messageSize",
+        "packetSize",
+        "mtu",
+        "generatedBy",
+        "generatedAt"
+      ],
+      "properties": {
+        "seed": { "type": "integer", "minimum": 0 },
+        "swarmSize": { "type": "integer", "minimum": 1 },
+        "numClusters": { "type": "integer", "minimum": 1 },
+        "protocol": {
+          "type": "string",
+          "enum": ["FlatSBP", "HSBP", "DTHSBP", "LKH", "TGDH"]
+        },
+        "simulationTime": { "type": "number", "exclusiveMinimum": 0 },
+        "timeStep": { "type": "number", "exclusiveMinimum": 0 },
+        "arenaWidthM": { "type": "number", "exclusiveMinimum": 0 },
+        "arenaHeightM": { "type": "number", "exclusiveMinimum": 0 },
+        "maxVelocityMps": { "type": "number", "minimum": 0 },
+        "keySize": { "type": "integer", "minimum": 1 },
+        "headerSize": { "type": "integer", "minimum": 0 },
+        "controlSize": { "type": "integer", "minimum": 0 },
+        "messageSize": { "type": "integer", "minimum": 1 },
+        "packetSize": { "type": "integer", "minimum": 1 },
+        "mtu": { "type": "integer", "minimum": 1 },
+        "generatedBy": { "type": "string", "minLength": 1 },
+        "generatedAt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "initialNodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uavId", "clusterId", "role", "x", "y", "vx", "vy", "energy"],
+        "properties": {
+          "uavId": { "type": "integer", "minimum": 1 },
+          "clusterId": { "type": "integer", "minimum": 1 },
+          "role": { "type": "string", "enum": ["SL", "CH", "follower"] },
+          "x": { "type": "number", "minimum": 0 },
+          "y": { "type": "number", "minimum": 0 },
+          "vx": { "type": "number" },
+          "vy": { "type": "number" },
+          "energy": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "t",
+          "type",
+          "clusterId",
+          "affectedUAVs",
+          "isCollateralBatch",
+          "predictionHit",
+          "nodePositions",
+          "hops",
+          "crypto",
+          "clusterMembershipAfter"
+        ],
+        "properties": {
+          "t": { "type": "number", "minimum": 0 },
+          "type": {
+            "type": "string",
+            "enum": [
+              "join",
+              "leave",
+              "failure",
+              "dtDisturbance",
+              "dtPredictedDeparture"
+            ]
+          },
+          "clusterId": { "type": "integer", "minimum": 1 },
+          "affectedUAVs": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 }
+          },
+          "isCollateralBatch": { "type": "boolean" },
+          "predictionHit": {
+            "type": ["boolean", "null"]
+          },
+          "nodePositions": {
+            "type": "array",
+            "description": "Bounded per-event 2D position snapshot containing only SL, CH of clusterId, and active members in clusterMembershipAfter.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["uavId", "clusterId", "role", "x", "y"],
+              "properties": {
+                "uavId": { "type": "integer", "minimum": 1 },
+                "clusterId": { "type": "integer", "minimum": 1 },
+                "role": { "type": "string", "enum": ["SL", "CH", "follower"] },
+                "x": { "type": "number", "minimum": 0 },
+                "y": { "type": "number", "minimum": 0 }
+              }
+            }
+          },
+          "hops": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["from", "to", "bytes", "kind", "fanout", "fragmentsCount"],
+              "properties": {
+                "from": { "type": "string", "enum": ["SL", "CH", "follower"] },
+                "to": { "type": "string", "enum": ["SL", "CH", "follower"] },
+                "bytes": { "type": "integer", "minimum": 0 },
+                "kind": {
+                  "type": "string",
+                  "enum": ["SL_TO_CH", "CH_TO_FOLLOWER", "FOLLOWER_TO_CH_DT"]
+                },
+                "fanout": { "type": "integer", "minimum": 0 },
+                "fragmentsCount": { "type": "integer", "minimum": 0 }
+              }
+            }
+          },
+          "crypto": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["leaderTimeMs", "rekeyCount", "messagesSent", "bytesTransmitted"],
+            "properties": {
+              "leaderTimeMs": { "type": "number", "minimum": 0 },
+              "rekeyCount": { "type": "integer", "minimum": 0 },
+              "messagesSent": { "type": "integer", "minimum": 0 },
+              "bytesTransmitted": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "clusterMembershipAfter": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    }
+  }
+}
