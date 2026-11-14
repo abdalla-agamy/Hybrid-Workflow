@@ -26,3 +26,8 @@
   - `runtests('tests/TestTraceExporter.m')`: **5/5 PASS**.
   - `python scripts/validate_traces.py`: **30/30** exported trace JSONs + `matlab_baseline_metrics.json` schema-valid & bounded-scoping PASS.
   - Zero-regression checks: `ExperimentSmokeTest` (**PASS**, 18/18 join, 18/18 leave), `ComparativeStochasticStudyTest` (**PASS**, 12/12 runs), and bit-for-bit `runStochasticExperiment` parity verified against untouched `./DT-HSBP` baseline (pre-existing `FullStochasticMetricsTest` `hsbpNoDTInvariant=0` discrepancy logged in `PLAN_CHANGELOG.md`).
+- **Commit**: `59fc765`
+
+## Phase 3A: Python Trace Loader, Carry-Forward Topology & Wireless Channel (2026-11-14)
+- **Built**: Created `python_simpy_layer/requirements.txt`, `--system-site-packages` `.venv` with `simpy 4.1.2` + `pytest 9.2.0`, `python_simpy_layer/src/{__init__.py, trace_loader.py, topology_manager.py, wireless_channel.py}`, and `docs/architecture.md`. Implemented bounded `nodePositions` carry-forward with dynamic CH/SL reassignment, NetworkX range graph builder, and log-distance path loss + shadowing + Gilbert-Elliott bursty PER + `d/3e8` propagation delay.
+- **Tested**: Ran `python -m pytest tests/test_part3a_channel_topology.py -v` — **5/5 PASS**.

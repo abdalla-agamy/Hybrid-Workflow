@@ -1,0 +1,10 @@
+simpy>=4.1.1
+networkx>=3.2
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+matplotlib>=3.8
+jsonschema>=4.20
+PyYAML>=6.0
+reportlab>=4.0
+pytest>=8.0
