@@ -1,0 +1,40 @@
+# MATLAB
+*.asv
+*.m~
+slprj/
+*.mex*
+
+# Large traces (keep schemas and small sample fixtures)
+traces/*.json
+!traces/schemas/**
+!traces/samples/**
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+*.egg-info/
+
+# SimPy results (keep .gitkeep)
+python_simpy_layer/results/**
+!python_simpy_layer/results/**/.gitkeep
+
+# OMNeT++ / INET & C++ build artifacts
+omnetpp_inet_layer/out/
+*.vec
+*.vci
+*.sca
+*.exe
+*.dll
+*.o
+omnetpp_inet_layer/results/**
+!omnetpp_inet_layer/results/**/.gitkeep
+
+# OS / IDE
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
