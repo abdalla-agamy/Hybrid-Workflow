@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import math
+from collections import deque
 from dataclasses import dataclass
 
 import networkx as nx
 import numpy as np
-from scipy.sparse.csgraph import breadth_first_order
+from scipy.spatial import cKDTree
 
 from .trace_loader import SwarmTrace, TraceEvent
 
@@ -225,7 +226,7 @@ class TopologyManager:
             return {}
         src_idx = id_to_idx[src_id]
 
-        # Fast-path: if all requested targets are 1 hop away, skip O(N^2) matrix construction
+        # Fast-path: if all requested targets are 1 hop away, skip BFS
         if target_ids is not None:
             sx, sy = coords[src_idx, 0], coords[src_idx, 1]
             t_present = [tid for tid in target_ids if tid in id_to_idx]
@@ -235,14 +236,29 @@ class TopologyManager:
             ):
                 return {tid: ([src_id] if tid == src_id else [src_id, tid]) for tid in t_present}
 
-        diff = coords[:, None, :] - coords[None, :, :]
-        dist_sq = diff[:, :, 0] ** 2 + diff[:, :, 1] ** 2
-        adj = (dist_sq <= comm_range_m * comm_range_m).astype(np.int8)
-        np.fill_diagonal(adj, 0)
-
-        _, preds = breadth_first_order(adj, src_idx, directed=False, return_predecessors=True)
-
         targets = target_ids if target_ids is not None else ids.tolist()
+        target_indices = {id_to_idx[tid] for tid in targets if tid in id_to_idx and tid != src_id}
+
+        tree = cKDTree(coords)
+        n = len(ids)
+        visited = np.zeros(n, dtype=bool)
+        visited[src_idx] = True
+        preds = np.full(n, -1, dtype=np.int64)
+
+        queue: deque[int] = deque([src_idx])
+        remaining = len(target_indices)
+        while queue and remaining > 0:
+            u_idx = queue.popleft()
+            for v_idx in tree.query_ball_point(coords[u_idx], comm_range_m):
+                if not visited[v_idx]:
+                    visited[v_idx] = True
+                    preds[v_idx] = u_idx
+                    queue.append(v_idx)
+                    if v_idx in target_indices:
+                        remaining -= 1
+                        if remaining == 0:
+                            break
+
         paths: dict[int, list[int]] = {}
         ids_list = ids.tolist()
         for tid in targets:
@@ -252,7 +268,7 @@ class TopologyManager:
             if tidx == src_idx:
                 paths[tid] = [src_id]
                 continue
-            if preds[tidx] == -9999:
+            if preds[tidx] == -1:
                 continue
             rev = [tid]
             cur = tidx

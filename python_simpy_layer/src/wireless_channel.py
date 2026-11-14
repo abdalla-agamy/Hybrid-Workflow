@@ -103,3 +103,35 @@ class WirelessChannel:
             eff_per = base_per
         draws = self.rng.random(size=len(d))
         return draws >= eff_per
+
+    def sample_deliveries_sequential(self, distances_m: np.ndarray) -> np.ndarray:
+        """Vectorized PER sampling advancing Gilbert-Elliott burst state across a link sequence."""
+        d = np.asarray(distances_m, dtype=np.float64)
+        n = len(d)
+        if n == 0:
+            return np.empty(0, dtype=bool)
+        base_per = self.compute_per_array(d)
+        if self.cfg.base_p_loss > 0.0 and self.cfg.bad_loss_multiplier != 1.0:
+            u = self.rng.random(size=n)
+            bad_flags = np.empty(n, dtype=bool)
+            in_bad = self.in_bad_state
+            p_gb = self.cfg.p_good_to_bad
+            p_bg = self.cfg.p_bad_to_good
+            for i in range(n):
+                if in_bad:
+                    if u[i] < p_bg:
+                        in_bad = False
+                else:
+                    if u[i] < p_gb:
+                        in_bad = True
+                bad_flags[i] = in_bad
+            self.in_bad_state = in_bad
+            mult = np.where(bad_flags, self.cfg.bad_loss_multiplier, 1.0)
+            eff_per = np.where(
+                d > self.cfg.comm_range_m,
+                base_per,
+                np.minimum(0.95, base_per * mult),
+            )
+        else:
+            eff_per = base_per
+        return self.rng.random(size=n) >= eff_per

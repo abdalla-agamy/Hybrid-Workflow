@@ -1,0 +1,35 @@
+seed: 42
+comm_range_m: 350.0
+carrier_sense_range_m: 700.0
+mtu_bytes: 1500
+max_retries: 3
+enable_multihop_relay: true
+
+p_loss:
+  - 0.0
+  - 0.05
+  - 0.10
+  - 0.15
+
+data_rate_mbps:
+  - 6.0
+  - 54.0
+
+protocols:
+  - FlatSBP
+  - HSBP
+  - DTHSBP
+  - LKH
+  - TGDH
+
+swarm_sizes:
+  - 50
+  - 100
+  - 200
+  - 250
+  - 1000
+
+traces_dir: "../traces/runs"
+fallback_samples_dir: "../traces/samples"
+results_dir: "results"
+validate_traces: false

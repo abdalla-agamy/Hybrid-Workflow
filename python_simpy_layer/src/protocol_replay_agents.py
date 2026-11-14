@@ -162,8 +162,9 @@ class ProtocolReplayRunner:
         ch_id: int,
         follower_ids: list[int],
         payload_bytes: int,
+        precomputed_topology: tuple[list[int], list[int], dict[int, list[int]], list[int]] | None = None,
     ):
-        """Disseminate CH_TO_FOLLOWER round via 1-hop broadcast + BFS relays for out-of-range nodes."""
+        """Disseminate CH_TO_FOLLOWER round via 1-hop broadcast + greedy BFS relays for out-of-range nodes."""
         n_targets = len(follower_ids)
         if n_targets == 0 or payload_bytes <= 0:
             return MacTxStats(
@@ -176,23 +177,14 @@ class ProtocolReplayRunner:
         agg = MacTxStats(target_count=n_targets, delivered_mask=np.zeros(n_targets, dtype=bool))
         idx_map = {fid: i for i, fid in enumerate(follower_ids)}
 
-        in_range = [fid for fid in follower_ids if self.topology.distance(ch_id, fid) <= self.cfg.comm_range_m]
-        out_range = [fid for fid in follower_ids if fid not in set(in_range)]
-
-        # 1. Direct broadcast from CH (covering in-range followers directly; attempt long-range only if unrelayable)
-        relay_paths: dict[int, list[int]] = {}
-        unconnected: list[int] = []
-
-        if out_range and self.cfg.enable_multihop_relay:
-            relay_paths = self.topology.compute_bfs_paths(ch_id, self.cfg.comm_range_m, out_range)
-            for fid in out_range:
-                if fid not in relay_paths:
-                    unconnected.append(fid)
+        if precomputed_topology is None:
+            in_range, _, relay_paths, unconnected = self._prepare_cluster_broadcast_plan(ch_id, follower_ids)
         else:
-            unconnected = out_range
+            in_range, _, relay_paths, unconnected = precomputed_topology
 
-        direct_batch = in_range + unconnected
-        covered: set[int] = set()
+        depth1_relays = [p[1] for p in relay_paths.values() if len(p) > 1]
+        direct_batch = list(dict.fromkeys(in_range + depth1_relays + unconnected))
+        covered_frontier: set[int] = {ch_id}
 
         if direct_batch:
             st = yield from self.mac.transmit_broadcast(ch_id, direct_batch, payload_bytes)
@@ -200,33 +192,52 @@ class ProtocolReplayRunner:
             agg.retransmissions += st.retransmissions
             agg.mac_collisions += st.mac_collisions
             agg.bytes_on_air += st.bytes_on_air
-            for fid, ok in zip(direct_batch, st.delivered_mask.tolist()):
+            for nid, ok in zip(direct_batch, st.delivered_mask.tolist()):
                 if ok:
-                    agg.delivered_mask[idx_map[fid]] = True
-                    covered.add(fid)
+                    covered_frontier.add(nid)
+                    if nid in idx_map:
+                        agg.delivered_mask[idx_map[nid]] = True
 
-        # 2. Relay out-of-range cluster followers along BFS levels from covered nodes (including CH neighbors)
+        # Relay out-of-range nodes greedily along BFS depth levels using covered parents (including cross-cluster relays).
         if relay_paths:
-            covered_frontier = {ch_id} | covered
             max_depth = max((len(p) - 1 for p in relay_paths.values()), default=0)
             for edge_idx in range(1, max_depth):
-                # Group children receiving at hop `edge_idx -> edge_idx+1` by their parent relay node
-                by_parent: dict[int, list[int]] = {}
-                for fid, p in relay_paths.items():
-                    if len(p) - 1 > edge_idx:
-                        parent = p[edge_idx]
-                        child = p[edge_idx + 1]
-                        if parent in covered_frontier and child not in covered_frontier:
-                            by_parent.setdefault(parent, []).append(child)
+                uncovered_at_level = {
+                    p[edge_idx + 1]
+                    for p in relay_paths.values()
+                    if len(p) - 1 > edge_idx
+                    and p[edge_idx] in covered_frontier
+                    and p[edge_idx + 1] not in covered_frontier
+                }
+                parents_here = [
+                    p[edge_idx]
+                    for p in relay_paths.values()
+                    if len(p) - 1 > edge_idx and p[edge_idx] in covered_frontier
+                ]
+                candidate_parents = list(dict.fromkeys(parents_here))
 
-                for parent, children in by_parent.items():
-                    uniq_children = list(dict.fromkeys(children))
-                    st = yield from self.mac.transmit_broadcast(parent, uniq_children, payload_bytes)
+                while uncovered_at_level and candidate_parents:
+                    best_parent = None
+                    best_children: list[int] = []
+                    for parent in candidate_parents:
+                        children = [
+                            c for c in uncovered_at_level
+                            if self.topology.distance(parent, c) <= self.cfg.comm_range_m
+                        ]
+                        if len(children) > len(best_children):
+                            best_parent = parent
+                            best_children = children
+                    if best_parent is None or not best_children:
+                        break
+                    candidate_parents.remove(best_parent)
+                    uncovered_at_level.difference_update(best_children)
+
+                    st = yield from self.mac.transmit_broadcast(best_parent, best_children, payload_bytes)
                     agg.fragments_sent += st.fragments_sent
                     agg.retransmissions += st.retransmissions
                     agg.mac_collisions += st.mac_collisions
                     agg.bytes_on_air += st.bytes_on_air
-                    for child, ok in zip(uniq_children, st.delivered_mask.tolist()):
+                    for child, ok in zip(best_children, st.delivered_mask.tolist()):
                         if ok:
                             covered_frontier.add(child)
                             if child in idx_map:
@@ -235,6 +246,24 @@ class ProtocolReplayRunner:
         agg.delivered_count = int(np.sum(agg.delivered_mask))
         agg.airtime_s = self.env.now - t0
         return agg
+
+    def _prepare_cluster_broadcast_plan(
+        self, ch_id: int, follower_ids: list[int]
+    ) -> tuple[list[int], list[int], dict[int, list[int]], list[int]]:
+        in_range = [fid for fid in follower_ids if self.topology.distance(ch_id, fid) <= self.cfg.comm_range_m]
+        in_set = set(in_range)
+        out_range = [fid for fid in follower_ids if fid not in in_set]
+
+        relay_paths: dict[int, list[int]] = {}
+        unconnected: list[int] = []
+        if out_range and self.cfg.enable_multihop_relay:
+            relay_paths = self.topology.compute_bfs_paths(ch_id, self.cfg.comm_range_m, out_range)
+            for fid in out_range:
+                if fid not in relay_paths:
+                    unconnected.append(fid)
+        else:
+            unconnected = out_range
+        return in_range, out_range, relay_paths, unconnected
 
     def _process_event(self, ev: TraceEvent):
         self.topology.apply_event(ev)
@@ -265,17 +294,26 @@ class ProtocolReplayRunner:
                         else {}
                     )
                     n_pool = len(active_pool)
+                    target_ids = [active_pool[idx % n_pool] for idx in range(len(ev.hops))]
+                    if self.cfg.enable_multihop_relay:
+                        paths = [
+                            sl_paths.get(dst, [sl_id, dst]) if self.topology.distance(sl_id, dst) > self.cfg.comm_range_m else [sl_id, dst]
+                            for dst in target_ids
+                        ]
+                    else:
+                        paths = [[sl_id, dst] for dst in target_ids]
+
+                    payload_b = ev.hops[0].bytes_len
+                    st = yield from self.mac.transmit_unicast_paths(paths, payload_b)
+                    bytes_air += st.bytes_on_air
+                    frags += st.fragments_sent
+                    retx += st.retransmissions
+                    cols += st.mac_collisions
+
                     target_ok: dict[int, bool] = {}
-                    for idx, hop in enumerate(ev.hops):
-                        dst = active_pool[idx % n_pool]
-                        st = yield from self._relay_unicast(sl_id, dst, hop.bytes_len, sl_paths)
-                        bytes_air += st.bytes_on_air
-                        frags += st.fragments_sent
-                        retx += st.retransmissions
-                        cols += st.mac_collisions
-                        ok = st.delivered_count > 0
+                    for dst, ok in zip(target_ids, st.delivered_mask.tolist()):
                         hop_pdrs.append(1.0 if ok else 0.0)
-                        target_ok[dst] = target_ok.get(dst, True) and ok
+                        target_ok[dst] = target_ok.get(dst, True) and bool(ok)
                     if target_ok:
                         key_sync = sum(1 for v in target_ok.values() if v) / len(target_ok)
                     else:
@@ -286,6 +324,7 @@ class ProtocolReplayRunner:
                 key_sync = 1.0
         else:
             sl_to_ch_ok = True
+            cluster_bcast_plan = None
             for hop in ev.hops:
                 if hop.kind == "FOLLOWER_TO_CH_DT":
                     src = next(
@@ -324,8 +363,12 @@ class ProtocolReplayRunner:
                             round_sync_masks.append(np.zeros(len(cluster_followers), dtype=bool))
                             hop_pdrs.append(0.0)
                         else:
+                            if cluster_bcast_plan is None:
+                                cluster_bcast_plan = self._prepare_cluster_broadcast_plan(
+                                    ch_id, cluster_followers
+                                )
                             st = yield from self._disseminate_cluster_broadcast(
-                                ch_id, cluster_followers, hop.bytes_len
+                                ch_id, cluster_followers, hop.bytes_len, cluster_bcast_plan
                             )
                             bytes_air += st.bytes_on_air
                             frags += st.fragments_sent
