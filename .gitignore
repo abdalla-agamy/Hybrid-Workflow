@@ -8,6 +8,7 @@ matlab_layer/reports/*.pdf
 
 # Large traces (keep schemas and small sample fixtures)
 traces/*.json
+traces/runs/
 !traces/schemas/**
 !traces/samples/**
 
