@@ -46,3 +46,8 @@
 ## Phase 3D: End-to-End Integration Verification Across All 5 Protocol Traces (2026-11-14)
 - **Built**: Created `python_simpy_layer/tests/test_part3d_integration.py` verifying committed `N=50` and `N=250` real MATLAB trace replays (`FlatSBP`, `HSBP`, `DTHSBP`, `LKH`, `TGDH`), full 200-run/20824-event sweep consistency, monotonic loss degradation, zero-loss key-sync bounds (`>= 0.90` at `N=50`, `>= 0.995` at `N>=100`), `DTHSBP` superiority over `FlatSBP`/`HSBP`, and the grounded rate-dependent `LKH`/`TGDH` vs `DTHSBP` latency crossover. Logged topology and CSMA/CA findings in `PLAN_CHANGELOG.md`.
 - **Tested**: Ran `python -m pytest tests/ -v` — **20/20 PASS** (`24.82s`, zero skipped).
+- **Commit**: `e32a9cb`
+
+## Phase 4: Comparative MATLAB-vs-SimPy Report & 300-DPI Figures (2026-11-14)
+- **Built**: Created `comparison_reports/phase4_matlab_vs_simpy/generate_phase4_report.py` loading metrics dynamically from `baseline_matlab_results/matlab_baseline_metrics.json` and the 200-run/20,824-event SimPy dataset (`simpy_sweep_results.csv`, `simpy_summary_metrics.json`, `simpy_per_event_metrics.csv`). Generated four 300-DPI publication PNGs (`fig1_communication_cost_matlab_vs_simpy.png`, `fig2_rekey_latency_breakdown.png`, `fig3_pdr_and_keysync_vs_loss.png`, `fig4_dt_batch_efficiency_under_loss.png`), `Phase4_MATLAB_vs_SimPy_Report.md`, and ReportLab `NumberedCanvas` `Phase4_MATLAB_vs_SimPy_Report.pdf`.
+- **Tested**: Executed `python generate_phase4_report.py` (**exit 0**) and verified all 4 PNGs (`287–434 KB`), Markdown (`10.6 KB`), PDF (`1.63 MB`), and clean figure layout via visual inspection.
