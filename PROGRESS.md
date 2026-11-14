@@ -31,3 +31,8 @@
 ## Phase 3A: Python Trace Loader, Carry-Forward Topology & Wireless Channel (2026-11-14)
 - **Built**: Created `python_simpy_layer/requirements.txt`, `--system-site-packages` `.venv` with `simpy 4.1.2` + `pytest 9.2.0`, `python_simpy_layer/src/{__init__.py, trace_loader.py, topology_manager.py, wireless_channel.py}`, and `docs/architecture.md`. Implemented bounded `nodePositions` carry-forward with dynamic CH/SL reassignment, NetworkX range graph builder, and log-distance path loss + shadowing + Gilbert-Elliott bursty PER + `d/3e8` propagation delay.
 - **Tested**: Ran `python -m pytest tests/test_part3a_channel_topology.py -v` — **5/5 PASS**.
+- **Commit**: `b8b283a`
+
+## Phase 3B: CSMA/CA MAC, MTU Fragmentation & 5-Protocol Replay Agents (2026-11-14)
+- **Built**: Implemented `python_simpy_layer/src/radio_mac.py` (spatial CSMA/CA carrier sensing inside `700m`, binary exponential backoff `CW_min=15..CW_max=1023`, `1500B` MTU fragmentation, unicast ACK retries & vectorized broadcast re-transmission rounds) and `python_simpy_layer/src/protocol_replay_agents.py` (replaying `FlatSBP`, `HSBP`, `DTHSBP`, `LKH`, `TGDH`, and `FOLLOWER_TO_CH_DT` over vectorized BFS relays with full per-event & summary metrics). Updated `topology_manager.py` with `scipy.sparse.csgraph` `compute_bfs_paths`.
+- **Tested**: Ran `python -m pytest tests/test_part3a_channel_topology.py tests/test_part3b_mac_protocols.py -v` — **10/10 PASS**.

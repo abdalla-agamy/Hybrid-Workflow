@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 import networkx as nx
 import numpy as np
+from scipy.sparse.csgraph import breadth_first_order
 
 from .trace_loader import SwarmTrace, TraceEvent
 
@@ -202,6 +203,63 @@ class TopologyManager:
         diff = coords[:, None, :] - coords[None, :, :]
         dist_mat = np.hypot(diff[:, :, 0], diff[:, :, 1])
         i_idx, j_idx = np.where((np.triu(np.ones((n, n), dtype=bool), k=1)) & (dist_mat <= comm_range_m))
-        for i, j in zip(i_idx.tolist(), j_idx.tolist()):
-            g.add_edge(int(ids[i]), int(ids[j]), distance_m=float(dist_mat[i, j]))
+        g.add_weighted_edges_from(
+            (int(ids[i]), int(ids[j]), float(dist_mat[i, j]))
+            for i, j in zip(i_idx.tolist(), j_idx.tolist())
+        )
+        # Keep backward-compatible edge attribute alias `distance_m`
+        for u, v, d in g.edges(data=True):
+            d["distance_m"] = d.pop("weight")
         return g
+
+    def compute_bfs_paths(
+        self,
+        src_id: int,
+        comm_range_m: float,
+        target_ids: list[int] | None = None,
+    ) -> dict[int, list[int]]:
+        """Fast vectorized BFS shortest paths within comm_range_m equivalent to NetworkX BFS."""
+        ids, coords = self.get_active_positions_array()
+        id_to_idx = {int(uid): idx for idx, uid in enumerate(ids.tolist())}
+        if src_id not in id_to_idx:
+            return {}
+        src_idx = id_to_idx[src_id]
+
+        # Fast-path: if all requested targets are 1 hop away, skip O(N^2) matrix construction
+        if target_ids is not None:
+            sx, sy = coords[src_idx, 0], coords[src_idx, 1]
+            t_present = [tid for tid in target_ids if tid in id_to_idx]
+            if all(
+                math.hypot(coords[id_to_idx[tid], 0] - sx, coords[id_to_idx[tid], 1] - sy) <= comm_range_m
+                for tid in t_present
+            ):
+                return {tid: ([src_id] if tid == src_id else [src_id, tid]) for tid in t_present}
+
+        diff = coords[:, None, :] - coords[None, :, :]
+        dist_sq = diff[:, :, 0] ** 2 + diff[:, :, 1] ** 2
+        adj = (dist_sq <= comm_range_m * comm_range_m).astype(np.int8)
+        np.fill_diagonal(adj, 0)
+
+        _, preds = breadth_first_order(adj, src_idx, directed=False, return_predecessors=True)
+
+        targets = target_ids if target_ids is not None else ids.tolist()
+        paths: dict[int, list[int]] = {}
+        ids_list = ids.tolist()
+        for tid in targets:
+            tidx = id_to_idx.get(tid)
+            if tidx is None:
+                continue
+            if tidx == src_idx:
+                paths[tid] = [src_id]
+                continue
+            if preds[tidx] == -9999:
+                continue
+            rev = [tid]
+            cur = tidx
+            while cur != src_idx and preds[cur] >= 0:
+                cur = int(preds[cur])
+                rev.append(ids_list[cur])
+            if cur == src_idx:
+                rev.reverse()
+                paths[tid] = rev
+        return paths
