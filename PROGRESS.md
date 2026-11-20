@@ -65,3 +65,7 @@
   - Python gate `pytest tests/ -v`: **20/20 PASS**.
   - Standalone C++17 `clang++.exe` `test_omnet_json_parser`: **5/5 PASS**.
   - Built `dt_hsbp_omnet.exe` via `opp_makemake` + `CLANG64` `make` (**0 errors**) and ran headless Cmdenv `DTHSBP_Smoke` (`132,749` events in `1.97 s` -> `meanPdr=0.9045`, `meanKeySyncRatio=0.8915`, `meanNetworkLatencyMs=8.109 ms`, `collateralLeavesBatched=4`).
+- **Phase 5C (`omnetpp_inet_layer/simulations/omnetpp.ini`, `TraceEventPlayer.cc`, `parse_omnet_scalars.py`, `run_omnet_sweep.py`)**:
+  - Defined headless `Scalability` (40 runs), `LossResilience` (80 runs), and `DynamicStochastic` (5 per-event CSV runs) configs in `omnetpp.ini`; enabled `MapCommunicationCache`, `maxTransmissionDuration = 5ms`, and `radioModeFilter`/`listeningFilter = true` to avoid `std::bad_alloc` under dense $N=250$ compound hosts (`234 MiB` RSS vs OOM).
+  - Calibrated `armStageTimer` in `TraceEventPlayer.cc` for multi-hop `FlatSBP` batch draining (`Scalability #30` `FlatSBP N=250, 6 Mbps, p_loss=0.05` verified end-to-end across `64,487,419` events in `t=105s` -> `meanPdr=0.99996`, `meanNetworkLatencyMs=577.394 ms`).
+  - Implemented `parse_omnet_scalars.py` (exact 22-column SimPy CSV/JSON schema + per-event CSV merge) and `run_omnet_sweep.py` (LPT-ordered 3-worker execution with cross-config grid deduplication -> 100 unique runs and automatic `.vec`/`.vci` cleanup).
