@@ -3,12 +3,20 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <deque>
+#include <fstream>
 #include <map>
+#include <random>
+#include <set>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #ifndef OMNETPP_STANDALONE_TEST
 #include <omnetpp.h>
+#include "DTHSBPPayload.h"
+#include "inet/networklayer/common/L3Address.h"
 #endif
 
 namespace dthsbp {
@@ -122,6 +130,14 @@ public:
     double distanceBetween(int uavA, int uavB) const;
     int countActiveNodes() const;
     bool hasValidHeadForAllNonEmptyClusters() const;
+    std::vector<int> activeUavIds() const;
+    std::vector<int> clusterFollowers(int clusterId) const;
+    int clusterHead(int clusterId) const;
+    std::unordered_map<int, std::vector<int> > computeBfsPaths(
+        int srcUavId,
+        double commRangeM,
+        const std::vector<int>& targets
+    ) const;
 
 private:
     TraceMeta meta_;
@@ -136,27 +152,152 @@ private:
 };
 
 #ifndef OMNETPP_STANDALONE_TEST
+
+class TraceMobility;
+class DTHSBPRekeyApp;
+
 /**
- * OMNeT++ cSimpleModule wrapper executing TracePlayerCore step-by-step at event
- * timestamps ev.t inside INET 4.5 IEEE 802.11 simulations.
+ * OMNeT++ cSimpleModule driving bounded INET mobility updates and packet-level
+ * UDP/IEEE 802.11 DCF transmissions for every MATLAB trace event.
  */
 class TraceEventPlayer : public omnetpp::cSimpleModule {
 public:
-    TraceEventPlayer() : stepTimer_(nullptr), nextEventIdx_(0) {}
+    struct ActiveTx {
+        int txId = 0;
+        bool isBroadcast = false;
+        int srcUavId = -1;
+        int payloadBytes = 0;
+        int numFrags = 1;
+        int attempt = 0;
+        int flatPathIdx = -1; // >=0 for FlatSBP path forwarding
+        size_t fullPathPos = 0;
+        std::vector<int> fullPath;
+        std::vector<int> expectedInRange;
+        std::unordered_map<int, std::vector<bool> > fragAcked;
+        std::unordered_set<int> completedUavs;
+        bool finished = false;
+    };
+
+    struct EventPerfRecord {
+        double t = 0.0;
+        std::string eventType;
+        int clusterId = 0;
+        int rekeyCount = 0;
+        bool isCollateralBatch = false;
+        int affectedCount = 0;
+        int hasPredictionHit = 0;
+        int predictionHit = 0;
+        int64_t cryptoBytes = 0;
+        int64_t bytesOnAir = 0;
+        int64_t fragmentsSent = 0;
+        int64_t retransmissions = 0;
+        double cryptoLatencyMs = 0.0;
+        double networkLatencyMs = 0.0;
+        double totalLatencyMs = 0.0;
+        double pdr = 1.0;
+        double keySyncRatio = 1.0;
+    };
+
+    TraceEventPlayer() = default;
     virtual ~TraceEventPlayer();
 
+    void onPacketArrived(int hostIndex, int uavId, const WireRekeyHeader& hdr, int packetBytes);
+
 protected:
-    virtual void initialize() override;
+    virtual int numInitStages() const override { return inet::NUM_INIT_STAGES; }
+    virtual void initialize(int stage) override;
     virtual void handleMessage(omnetpp::cMessage* msg) override;
     virtual void finish() override;
 
 private:
-    void scheduleNextTraceEvent();
+    void initHostMappings();
+    void applyHostSlotUpdatesForEvent(const TraceEventRecord& ev);
+    void moveSnapshotHosts(const TraceEventRecord& ev);
+    void beginEvent(size_t evIdx);
+    void beginNetworkPhase();
+    void startNextHopInEvent();
+    void launchBroadcastDirectWave();
+    void launchBroadcastRelayWave();
+    void dispatchTx(ActiveTx& tx, const std::vector<int>& receivers);
+    void armStageTimer(int totalPayloadBitsEstimate, int txCount);
+    void checkCurrentStageCompletion();
+    void handleStageTimeout();
+    void completeCurrentEvent();
+    bool dropByExtraChannelLoss(int srcUavId, int dstUavId);
 
     TracePlayerCore core_;
-    omnetpp::cMessage* stepTimer_;
-    size_t nextEventIdx_;
+
+    // Parameters
+    std::string traceFile_;
+    std::string eventLogFile_;
+    bool enableMultiHop_ = true;
+    int mtuBytes_ = 1500;
+    int maxRetries_ = 3;
+    double commRangeM_ = 350.0;
+    double carrierSenseRangeM_ = 700.0;
+    double bitrateMbps_ = 6.0;
+    double pLossExtra_ = 0.0;
+    double retryTimeoutMultiplier_ = 3.0;
+
+    // Host slots
+    int numUavs_ = 0;
+    std::vector<TraceMobility*> mobilities_;
+    std::vector<DTHSBPRekeyApp*> apps_;
+    std::unordered_map<int, int> uavToSlot_;
+    std::vector<int> slotToUav_;
+    std::deque<int> freeSlots_;
+
+    // Timers
+    omnetpp::cMessage* stepTimer_ = nullptr;
+    omnetpp::cMessage* netStartTimer_ = nullptr;
+    omnetpp::cMessage* stageTimeoutTimer_ = nullptr;
+
+    // Event & stage state machine
+    size_t curEvIdx_ = 0;
+    bool isFlatSbpEvent_ = false;
+    bool slToChOk_ = true;
+    omnetpp::simtime_t evNetStartTime_;
+    int nextTxId_ = 1;
+
+    // Hop queue within event (for HSBP/DTHSBP/LKH/TGDH)
+    size_t curHopIdx_ = 0;
+
+    // Broadcast dissemination state for current CH_TO_FOLLOWER hop
+    enum class BcastSubphase { None, DirectWave, RelayWave };
+    BcastSubphase bcastSubphase_ = BcastSubphase::None;
+    int bcastChId_ = -1;
+    int bcastBytes_ = 0;
+    std::vector<int> bcastFollowers_;
+    std::unordered_map<int, size_t> bcastFollowerIndex_;
+    std::unordered_set<int> bcastCoveredFrontier_;
+    std::unordered_map<int, std::vector<int> > bcastRelayPaths_;
+    std::vector<bool> bcastDelivered_;
+    int bcastCurrentDepth_ = 1;
+    int bcastMaxDepth_ = 0;
+
+    // Active transactions inside current wave/hop
+    std::vector<ActiveTx> activeTxs_;
+    std::unordered_map<int, size_t> txIdToPos_;
+    std::vector<bool> flatTargetOk_;
+    std::vector<double> currentHopPdrs_;
+    std::vector<std::vector<bool> > currentRoundSyncMasks_;
+
+    // Per-event accumulators
+    int64_t evBytesOnAir_ = 0;
+    int64_t evFragsSent_ = 0;
+    int64_t evRetx_ = 0;
+
+    // Channel loss state (Gilbert-Elliott bursty model layered atop INET PHY/MAC)
+    std::mt19937 lossRng_;
+    std::unordered_map<uint64_t, bool> geBadState_;
+
+    // Signals & run-level records
+    omnetpp::simsignal_t rekeyLatencySig_ = -1;
+    omnetpp::simsignal_t eventPdrSig_ = -1;
+    omnetpp::simsignal_t eventKeySyncSig_ = -1;
+    std::vector<EventPerfRecord> perfRecords_;
 };
+
 #endif // OMNETPP_STANDALONE_TEST
 
 } // namespace dthsbp
