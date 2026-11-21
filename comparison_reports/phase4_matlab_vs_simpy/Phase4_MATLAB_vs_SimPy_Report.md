@@ -1,6 +1,6 @@
 # Phase 4 Comparative Technical Report: MATLAB Analytical Baseline vs. SimPy CSMA/CA Network Replay
 
-**Generated:** 2026-11-14 20:09:02  
+**Generated:** 2026-11-21 09:04:17  
 **Baseline Dataset:** `baseline_matlab_results/matlab_baseline_metrics.json` (`runCompleteEvaluationAndReport.m`, generated `2026-11-14T18:43:00`)  
 **Network Replay Sweep:** `200` runs (`20824` total trace events across `FlatSBP`, `HSBP`, `DTHSBP`, `LKH`, `TGDH`), `seed=42`, `comm_range=350.0 m`, `carrier_sense=700.0 m`, `MTU=1500 B`, `max_retries=3`
 

@@ -16,3 +16,7 @@ A multi-layer hybrid simulation workflow bridging the **Digital-Twin-Driven Hier
   - `phase6_tri_layer_benchmark/`: Tri-layer benchmark figures and report (MATLAB vs SimPy vs OMNeT++/INET).
 - `scripts/`: PowerShell/Python automation and schema validation helpers (`validate_traces.py`, `setup_omnetpp_windows.ps1`, etc.).
 - `docs/`: Mathematical performance model reference and hybrid architecture documentation.
+- `python_simpy_layer/`: SimPy 4 CSMA/CA wireless replay layer (`200`-run parametric sweep + pytest suite).
+- `omnetpp_inet_layer/`: Native Windows OMNeT++ 6.5.0 / INET 4.7.0 IEEE 802.11g DCF replay layer (`100`-run deduplicated sweep, `SafeDcf`, C++17 & pytest suites).
+- `comparison_reports/`: Phase 4 (MATLAB vs. SimPy) and Phase 6 (Tri-Layer MATLAB + SimPy + OMNeT++/INET) Markdown/PDF reports and 300-DPI figures.
+- `scripts/`: `validate_traces.py`, `setup_omnetpp_windows.ps1`, and master orchestrator `run_full_hybrid_pipeline.ps1`.
