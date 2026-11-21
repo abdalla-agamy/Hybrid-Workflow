@@ -84,6 +84,24 @@ def _run_one(task: tuple[str, int, str, dict[str, str]]) -> tuple[str, int, str,
     return config_name, run_idx, label, proc.returncode, dt, msg
 
 
+def _is_run_complete(config_name: str, run_idx: int, proto_val: str) -> bool:
+    """Return True if this run already produced a valid scalar output (and event CSV if DynamicStochastic)."""
+    results_dir = LAYER_ROOT / "results"
+    sca_path = results_dir / f"{config_name}-0-{run_idx}.sca"
+    if not sca_path.exists():
+        return False
+    try:
+        if "totalBytesOnAir" not in sca_path.read_text(encoding="utf-8", errors="replace"):
+            return False
+    except OSError:
+        return False
+    if config_name == "DynamicStochastic":
+        ev_csv = results_dir / f"omnet_events_{proto_val}_N250_r6_p05.csv"
+        if not ev_csv.exists():
+            return False
+    return True
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Execute OMNeT++ headless parameter studies in parallel.")
     parser.add_argument(
@@ -95,13 +113,18 @@ def main() -> None:
     parser.add_argument(
         "--workers",
         type=int,
-        default=3,
-        help="Parallel Cmdenv worker processes (default 3 to keep RAM < 1.5 GB at N=250)",
+        default=4,
+        help="Parallel Cmdenv worker processes (default 4; ~128 MiB commit per N=250 worker)",
     )
     parser.add_argument(
         "--no-dedup",
         action="store_true",
         help="Run overlapping points across configs without deduplication",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-run even if valid .sca output already exists for that run index",
     )
     args = parser.parse_args()
 
@@ -110,7 +133,8 @@ def main() -> None:
 
     env = _build_omnet_env()
     seen_grid_points: set[tuple[str, str, str, str]] = set()
-    scheduled_tasks: list[tuple[tuple[int, int, float, int], tuple[str, int, str, dict[str, str]]]] = []
+    scheduled_tasks: list[tuple[tuple[int, int, int, float], tuple[str, int, str, dict[str, str]]]] = []
+    skipped_existing = 0
 
     for cfg in args.configs:
         runs = query_runs(cfg, env)
@@ -126,16 +150,22 @@ def main() -> None:
                 continue
             seen_grid_points.add(key)
             label = f"{proto_val}_N{n_val}_{rate_val}M_p{ploss_val}"
-            # Longest-Processing-Time-First (LPT): start heavy FlatSBP large-N runs early
-            lpt_key = (
-                0 if proto_val == "FlatSBP" else 1,
-                -int(n_val),
-                float(rate_val),
+            if not args.force and _is_run_complete(cfg, r_idx, proto_val):
+                skipped_existing += 1
+                continue
+            # Prioritize DynamicStochastic first, then ascend swarm size N (lightest first, FlatSBP after peers)
+            order_key = (
                 0 if cfg == "DynamicStochastic" else 1,
+                int(n_val),
+                0 if proto_val != "FlatSBP" else 1,
+                float(rate_val),
             )
-            scheduled_tasks.append((lpt_key, (cfg, r_idx, label, env)))
+            scheduled_tasks.append((order_key, (cfg, r_idx, label, env)))
             queued_here += 1
         print(f"[OmnetSweep] Config '{cfg}': queued {queued_here}/{len(runs)} runs")
+
+    if skipped_existing > 0:
+        print(f"[OmnetSweep] Resumed mode: skipped {skipped_existing} already-completed runs")
 
     scheduled_tasks.sort(key=lambda item: item[0])
     tasks = [item[1] for item in scheduled_tasks]
@@ -146,11 +176,13 @@ def main() -> None:
     total = len(tasks)
 
     with concurrent.futures.ProcessPoolExecutor(max_workers=max(1, args.workers)) as pool:
-        for cfg, run_idx, label, rc, dt, err in pool.map(_run_one, tasks):
+        future_map = {pool.submit(_run_one, task): task for task in tasks}
+        for fut in concurrent.futures.as_completed(future_map):
+            cfg, run_idx, label, rc, dt, err = fut.result()
             completed += 1
             if rc != 0:
                 failures.append((cfg, run_idx, rc, err))
-                print(f"  [FAIL] {cfg}#{run_idx} ({label}) rc={rc} ({dt:.1f}s):\n{err}", flush=True)
+                print(f"  [FAIL {completed}/{total}] {cfg}#{run_idx} ({label}) rc={rc} ({dt:.1f}s):\n{err}", flush=True)
             else:
                 print(f"  [OK {completed}/{total}] {cfg}#{run_idx} ({label}) in {dt:.1f}s", flush=True)
 

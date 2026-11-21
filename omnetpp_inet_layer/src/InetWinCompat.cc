@@ -96,3 +96,51 @@ std::string doResolveExpression(cModule* thisModule, const char* expression) {
 } // namespace inet
 
 #endif // _WIN32 && !OMNETPP_STANDALONE_TEST
+
+#ifndef OMNETPP_STANDALONE_TEST
+
+#include "inet/common/Simsignals.h"
+#include "inet/linklayer/ieee80211/mac/coordinationfunction/Dcf.h"
+
+namespace dthsbp {
+
+/**
+ * Fixes an INET 4.7.0 Dcf::processLowerFrame bug under dense 54 Mbps contention:
+ * when a short third-party frame finishes arriving while waiting for an ACK
+ * (startRxTimer->isScheduled()), base Dcf drops it AND unconditionally cancels
+ * startRxTimer, hanging frameSequenceHandler if the expected ACK collided.
+ */
+class SafeDcf : public inet::ieee80211::Dcf {
+public:
+    virtual void processLowerFrame(
+        inet::Packet *packet,
+        const inet::Ptr<const inet::ieee80211::Ieee80211MacHeader>& header
+    ) override {
+        Enter_Method("processLowerFrame(%s)", packet->getName());
+        take(packet);
+        if (frameSequenceHandler->isSequenceRunning()) {
+            if ((!isForUs(header) && !startRxTimer->isScheduled()) || isForUs(header)) {
+                cancelEvent(startRxTimer);
+                frameSequenceHandler->processResponse(packet);
+            } else {
+                inet::PacketDropDetails details;
+                details.setReason(inet::NOT_ADDRESSED_TO_US);
+                emit(inet::packetDroppedSignal, packet, &details);
+                delete packet;
+            }
+        } else if (isForUs(header)) {
+            recipientProcessReceivedFrame(packet, header);
+        } else {
+            inet::PacketDropDetails details;
+            details.setReason(inet::NOT_ADDRESSED_TO_US);
+            emit(inet::packetDroppedSignal, packet, &details);
+            delete packet;
+        }
+    }
+};
+
+Define_Module(SafeDcf);
+
+} // namespace dthsbp
+
+#endif // !OMNETPP_STANDALONE_TEST

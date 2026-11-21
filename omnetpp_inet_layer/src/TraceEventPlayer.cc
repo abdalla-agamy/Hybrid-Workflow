@@ -1074,12 +1074,12 @@ void TraceEventPlayer::armStageTimer(int totalPayloadBitsEstimate, int txCount) 
     const double rateBps = std::max(1.0, bitrateMbps_) * 1e6;
     const double serSec = static_cast<double>(totalPayloadBitsEstimate) / rateBps;
     const double perTx = isFlatSbpEvent_
-        ? ((bitrateMbps_ <= 12.0) ? 0.0012 : 0.0007)
+        ? 0.0012
         : ((bitrateMbps_ <= 12.0) ? 0.00075 : 0.00045);
     const double expectedBatchSec = static_cast<double>(txCount) * perTx + serSec * 1.5;
     const double baseFloor = (bitrateMbps_ <= 12.0) ? 0.004 : 0.0015;
     const double maxCap = isFlatSbpEvent_
-        ? std::min(3.5, std::max(0.35, static_cast<double>(std::max(1, txCount)) * ((bitrateMbps_ <= 12.0) ? 0.0035 : 0.0020) + 0.15))
+        ? std::min(3.5, std::max(0.35, static_cast<double>(std::max(1, txCount)) * 0.0035 + 0.15))
         : 0.35;
     const double timeoutSec = std::min(maxCap, std::max(baseFloor, expectedBatchSec * 1.6 + 0.002));
     scheduleAt(omnetpp::simTime() + timeoutSec, stageTimeoutTimer_);
