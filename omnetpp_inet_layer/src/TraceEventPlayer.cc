@@ -496,12 +496,26 @@ std::unordered_map<int, std::vector<int> > TracePlayerCore::computeBfsPaths(
 Define_Module(dthsbp::TraceEventPlayer);
 
 TraceEventPlayer::~TraceEventPlayer() {
+    clearPendingRelayTimers();
     cancelAndDelete(stepTimer_);
     cancelAndDelete(netStartTimer_);
     cancelAndDelete(stageTimeoutTimer_);
     stepTimer_ = nullptr;
     netStartTimer_ = nullptr;
     stageTimeoutTimer_ = nullptr;
+}
+
+void TraceEventPlayer::clearPendingRelayTimers() {
+    for (auto& kv : pendingRelayTimers_) {
+        cancelAndDelete(kv.first);
+    }
+    pendingRelayTimers_.clear();
+}
+
+void TraceEventPlayer::scheduleStaggeredRelayDispatch(size_t pos, double delaySec) {
+    auto* rMsg = new omnetpp::cMessage("RelayJitterTx");
+    pendingRelayTimers_[rMsg] = std::make_pair(activeTxs_[pos].txId, pos);
+    scheduleAt(omnetpp::simTime() + std::max(0.0, delaySec), rMsg);
 }
 
 void TraceEventPlayer::initialize(int stage) {
@@ -516,6 +530,7 @@ void TraceEventPlayer::initialize(int stage) {
         bitrateMbps_ = par("bitrateMbps");
         pLossExtra_ = par("pLossExtra");
         retryTimeoutMultiplier_ = par("retryTimeoutMultiplier");
+        relayJitterMaxMs_ = par("relayJitterMaxMs");
         lossRng_.seed(static_cast<uint32_t>(par("rngSeed").intValue()));
 
         core_.loadFromFile(traceFile_);
@@ -635,11 +650,23 @@ void TraceEventPlayer::handleMessage(omnetpp::cMessage* msg) {
     } else if (msg == stageTimeoutTimer_) {
         handleStageTimeout();
     } else {
+        auto it = pendingRelayTimers_.find(msg);
+        if (it != pendingRelayTimers_.end()) {
+            const int expectedTxId = it->second.first;
+            const size_t pos = it->second.second;
+            pendingRelayTimers_.erase(it);
+            delete msg;
+            if (pos < activeTxs_.size() && activeTxs_[pos].txId == expectedTxId && !activeTxs_[pos].finished) {
+                dispatchTx(activeTxs_[pos], activeTxs_[pos].expectedInRange);
+            }
+            return;
+        }
         delete msg;
     }
 }
 
 void TraceEventPlayer::beginEvent(size_t evIdx) {
+    clearPendingRelayTimers();
     core_.applyEvent(evIdx);
     const TraceEventRecord& ev = core_.events()[evIdx];
     applyHostSlotUpdatesForEvent(ev);
@@ -992,6 +1019,7 @@ void TraceEventPlayer::launchBroadcastRelayWave() {
         ++bcastCurrentDepth_;
         if (relayOps.empty()) continue;
 
+        clearPendingRelayTimers();
         activeTxs_.clear();
         txIdToPos_.clear();
         int totalBits = 0;
@@ -1011,8 +1039,15 @@ void TraceEventPlayer::launchBroadcastRelayWave() {
             txIdToPos_[activeTxs_[pos].txId] = pos;
             totalBits += bcastBytes_ * 8;
         }
-        for (size_t pos = 0; pos < activeTxs_.size(); ++pos) {
-            dispatchTx(activeTxs_[pos], activeTxs_[pos].expectedInRange);
+        if (activeTxs_.size() <= 1 || relayJitterMaxMs_ <= 0.0) {
+            for (size_t pos = 0; pos < activeTxs_.size(); ++pos) {
+                dispatchTx(activeTxs_[pos], activeTxs_[pos].expectedInRange);
+            }
+        } else {
+            std::uniform_real_distribution<double> jitterDist(0.0, relayJitterMaxMs_ / 1000.0);
+            for (size_t pos = 0; pos < activeTxs_.size(); ++pos) {
+                scheduleStaggeredRelayDispatch(pos, jitterDist(lossRng_));
+            }
         }
         armStageTimer(totalBits, static_cast<int>(activeTxs_.size()));
         return;
@@ -1077,11 +1112,12 @@ void TraceEventPlayer::armStageTimer(int totalPayloadBitsEstimate, int txCount) 
         ? 0.0012
         : ((bitrateMbps_ <= 12.0) ? 0.00075 : 0.00045);
     const double expectedBatchSec = static_cast<double>(txCount) * perTx + serSec * 1.5;
-    const double baseFloor = (bitrateMbps_ <= 12.0) ? 0.004 : 0.0015;
+    const double jitterFloorSec = std::max(0.0, relayJitterMaxMs_) / 1000.0;
+    const double baseFloor = ((bitrateMbps_ <= 12.0) ? 0.004 : 0.0015) + jitterFloorSec;
     const double maxCap = isFlatSbpEvent_
         ? std::min(3.5, std::max(0.35, static_cast<double>(std::max(1, txCount)) * 0.0035 + 0.15))
         : 0.35;
-    const double timeoutSec = std::min(maxCap, std::max(baseFloor, expectedBatchSec * 1.6 + 0.002));
+    const double timeoutSec = std::min(maxCap, std::max(baseFloor, expectedBatchSec * 1.6 + 0.002 + jitterFloorSec));
     scheduleAt(omnetpp::simTime() + timeoutSec, stageTimeoutTimer_);
 }
 
@@ -1189,6 +1225,7 @@ void TraceEventPlayer::checkCurrentStageCompletion() {
     for (const auto& tx : activeTxs_) {
         if (!tx.finished) return;
     }
+    clearPendingRelayTimers();
     if (stageTimeoutTimer_->isScheduled()) {
         cancelEvent(stageTimeoutTimer_);
     }
@@ -1207,9 +1244,9 @@ void TraceEventPlayer::checkCurrentStageCompletion() {
 }
 
 void TraceEventPlayer::handleStageTimeout() {
-    bool anyRetrying = false;
+    clearPendingRelayTimers();
+    std::vector<size_t> retryPositions;
     int retryBits = 0;
-    int retryCount = 0;
 
     for (size_t pos = 0; pos < activeTxs_.size(); ++pos) {
         ActiveTx& tx = activeTxs_[pos];
@@ -1221,10 +1258,8 @@ void TraceEventPlayer::handleStageTimeout() {
             txIdToPos_.erase(tx.txId);
             tx.txId = nextTxId_++;
             txIdToPos_[tx.txId] = pos;
-            dispatchTx(tx, tx.expectedInRange);
-            anyRetrying = true;
+            retryPositions.push_back(pos);
             retryBits += tx.payloadBytes * 8;
-            ++retryCount;
         } else {
             tx.finished = true;
             if (!tx.isBroadcast) {
@@ -1237,14 +1272,25 @@ void TraceEventPlayer::handleStageTimeout() {
         }
     }
 
-    if (anyRetrying) {
-        armStageTimer(retryBits, retryCount);
+    if (!retryPositions.empty()) {
+        if (bcastSubphase_ == BcastSubphase::RelayWave && retryPositions.size() > 1 && relayJitterMaxMs_ > 0.0) {
+            std::uniform_real_distribution<double> jitterDist(0.0, relayJitterMaxMs_ / 1000.0);
+            for (size_t pos : retryPositions) {
+                scheduleStaggeredRelayDispatch(pos, jitterDist(lossRng_));
+            }
+        } else {
+            for (size_t pos : retryPositions) {
+                dispatchTx(activeTxs_[pos], activeTxs_[pos].expectedInRange);
+            }
+        }
+        armStageTimer(retryBits, static_cast<int>(retryPositions.size()));
     } else {
         checkCurrentStageCompletion();
     }
 }
 
 void TraceEventPlayer::completeCurrentEvent() {
+    clearPendingRelayTimers();
     const TraceEventRecord& ev = core_.events()[curEvIdx_];
     const double netMs = std::max(0.0, (omnetpp::simTime() - evNetStartTime_).dbl() * 1000.0);
     const double cryptoMs = ev.crypto.leaderTimeMs;

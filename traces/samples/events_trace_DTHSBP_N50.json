@@ -16,7 +16,7 @@
     "packetSize": 256,
     "mtu": 1500,
     "generatedBy": "DT-HSBP MATLAB Simulation (TraceExporter)",
-    "generatedAt": "2026-11-14T16:57:08Z"
+    "generatedAt": "2026-11-22T07:02:07Z"
   },
   "initialNodes": [
     {
@@ -529,7 +529,7 @@
         51
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -635,7 +635,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.6102,
+        "leaderTimeMs": 0.71810000000000007,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -662,7 +662,7 @@
         52
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -775,7 +775,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.391,
+        "leaderTimeMs": 0.39849999999999997,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -803,7 +803,7 @@
         43
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -888,17 +888,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.54089999999999994,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         41,
@@ -1054,7 +1054,7 @@
         53
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1160,7 +1160,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3811,
+        "leaderTimeMs": 0.4017,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -1187,7 +1187,7 @@
         54
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1300,7 +1300,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3484,
+        "leaderTimeMs": 0.3705,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -1421,17 +1421,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0815,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         11,
@@ -1454,7 +1454,7 @@
         55
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1574,7 +1574,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.84420000000000006,
+        "leaderTimeMs": 0.9328,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -1603,7 +1603,7 @@
         56
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1709,7 +1709,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1789,
+        "leaderTimeMs": 0.2074,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -1736,7 +1736,7 @@
         2
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1814,17 +1814,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.36279999999999996,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -1846,7 +1846,7 @@
         57
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -1938,7 +1938,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0869,
+        "leaderTimeMs": 0.1017,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -1964,7 +1964,7 @@
         58
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2070,7 +2070,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0949,
+        "leaderTimeMs": 0.085,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -2097,7 +2097,7 @@
         33
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2203,17 +2203,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.4441,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -2238,7 +2238,7 @@
         6
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2316,17 +2316,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 1.032,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -2348,7 +2348,7 @@
         4
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2419,17 +2419,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 448,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 7,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.5723,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 8,
-        "bytesTransmitted": 448
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -2450,7 +2450,7 @@
         28
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2542,17 +2542,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.19440000000000002,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         21,
@@ -2575,7 +2575,7 @@
         59
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2688,7 +2688,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0989,
+        "leaderTimeMs": 0.1249,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -2716,7 +2716,7 @@
         60
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -2815,7 +2815,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.076,
+        "leaderTimeMs": 0.0881,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -2940,17 +2940,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 112,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.092,
+        "leaderTimeMs": 0.0864,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 2,
+        "bytesTransmitted": 112
       },
       "clusterMembershipAfter": [
         11,
@@ -2974,7 +2974,7 @@
         56
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -3059,17 +3059,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0686,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         21,
@@ -3190,17 +3190,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.093300000000000008,
+        "leaderTimeMs": 0.0949,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -3316,17 +3316,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 168,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0721,
+        "leaderTimeMs": 0.0846,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 3,
+        "bytesTransmitted": 168
       },
       "clusterMembershipAfter": [
         31,
@@ -3441,17 +3441,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.7324,
+        "leaderTimeMs": 0.4645,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         11,
@@ -3474,7 +3474,7 @@
         61
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -3580,7 +3580,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.083,
+        "leaderTimeMs": 0.0828,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -3607,7 +3607,7 @@
         53
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -3692,17 +3692,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0736,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -3724,7 +3724,7 @@
         62
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -3823,7 +3823,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1046,
+        "leaderTimeMs": 0.0819,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -3849,7 +3849,7 @@
         63
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -3955,7 +3955,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0759,
+        "leaderTimeMs": 0.1106,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -3982,7 +3982,7 @@
         64
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -4081,7 +4081,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0745,
+        "leaderTimeMs": 0.12029999999999999,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -4107,7 +4107,7 @@
         65
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -4213,7 +4213,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0809,
+        "leaderTimeMs": 0.12459999999999999,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -4240,7 +4240,7 @@
         66
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -4353,7 +4353,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.079400000000000012,
+        "leaderTimeMs": 0.09509999999999999,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -4381,7 +4381,7 @@
         67
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -4501,7 +4501,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0842,
+        "leaderTimeMs": 0.0926,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -4530,7 +4530,7 @@
         68
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -4636,7 +4636,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0665,
+        "leaderTimeMs": 0.0679,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -4769,17 +4769,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.38949999999999996,
+        "leaderTimeMs": 0.39809999999999995,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -4868,17 +4868,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 392,
+          "bytes": 168,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 6,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0668,
+        "leaderTimeMs": 0.0671,
         "rekeyCount": 1,
-        "messagesSent": 7,
-        "bytesTransmitted": 392
+        "messagesSent": 3,
+        "bytesTransmitted": 168
       },
       "clusterMembershipAfter": [
         1,
@@ -4898,7 +4898,7 @@
         69
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5011,7 +5011,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1101,
+        "leaderTimeMs": 0.0854,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5039,7 +5039,7 @@
         44
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5131,17 +5131,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0688,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         41,
@@ -5164,7 +5164,7 @@
         70
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5284,7 +5284,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.10289999999999999,
+        "leaderTimeMs": 0.0956,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -5313,7 +5313,7 @@
         71
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5419,7 +5419,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0821,
+        "leaderTimeMs": 0.1834,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -5446,7 +5446,7 @@
         62
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5552,17 +5552,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0802,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -5587,7 +5587,7 @@
         72
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5700,7 +5700,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0828,
+        "leaderTimeMs": 0.0922,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5728,7 +5728,7 @@
         73
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5848,7 +5848,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0795,
+        "leaderTimeMs": 0.0961,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -5877,7 +5877,7 @@
         74
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -5955,7 +5955,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0605,
+        "leaderTimeMs": 0.0719,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -5979,7 +5979,7 @@
         75
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6092,7 +6092,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0828,
+        "leaderTimeMs": 0.0929,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -6120,7 +6120,7 @@
         37
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6219,17 +6219,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0787,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -6253,7 +6253,7 @@
         76
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6366,7 +6366,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1077,
+        "leaderTimeMs": 0.098999999999999991,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -6394,7 +6394,7 @@
         42
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6500,17 +6500,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0856,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         41,
@@ -6535,7 +6535,7 @@
         77
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6655,7 +6655,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1527,
+        "leaderTimeMs": 0.1053,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -6684,7 +6684,7 @@
         78
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6804,7 +6804,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1414,
+        "leaderTimeMs": 0.14300000000000002,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -6833,7 +6833,7 @@
         79
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -6918,7 +6918,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0735,
+        "leaderTimeMs": 0.10490000000000001,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -6943,7 +6943,7 @@
         9
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7014,17 +7014,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 448,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 7,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0641,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 8,
-        "bytesTransmitted": 448
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -7045,7 +7045,7 @@
         77
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7151,17 +7151,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.097,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         41,
@@ -7285,17 +7285,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 504,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.42769999999999997,
+        "leaderTimeMs": 0.443,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 9,
+        "bytesTransmitted": 504
       },
       "clusterMembershipAfter": [
         31,
@@ -7319,7 +7319,7 @@
         80
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7446,7 +7446,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1027,
+        "leaderTimeMs": 0.1118,
         "rekeyCount": 1,
         "messagesSent": 14,
         "bytesTransmitted": 784
@@ -7476,7 +7476,7 @@
         81
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7561,7 +7561,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.068899999999999989,
+        "leaderTimeMs": 0.073399999999999993,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -7586,7 +7586,7 @@
         27
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7685,17 +7685,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0795,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         21,
@@ -7719,7 +7719,7 @@
         82
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7832,7 +7832,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0842,
+        "leaderTimeMs": 0.0882,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -7860,7 +7860,7 @@
         48
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -7959,17 +7959,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0872,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         41,
@@ -8106,17 +8106,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 728,
+          "bytes": 112,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 12,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.4097,
+        "leaderTimeMs": 0.4597,
         "rekeyCount": 1,
-        "messagesSent": 13,
-        "bytesTransmitted": 728
+        "messagesSent": 2,
+        "bytesTransmitted": 112
       },
       "clusterMembershipAfter": [
         11,
@@ -8142,7 +8142,7 @@
         83
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -8255,7 +8255,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0968,
+        "leaderTimeMs": 0.089,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -8283,7 +8283,7 @@
         84
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -8403,7 +8403,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1037,
+        "leaderTimeMs": 0.0957,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -8432,7 +8432,7 @@
         10
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -8503,17 +8503,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 448,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 7,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.063800000000000009,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 8,
-        "bytesTransmitted": 448
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -8534,7 +8534,7 @@
         68
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -8626,17 +8626,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0746,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         21,
@@ -8659,7 +8659,7 @@
         38
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -8758,17 +8758,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0876,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -8884,17 +8884,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 112,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0821,
+        "leaderTimeMs": 0.080099999999999991,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 2,
+        "bytesTransmitted": 112
       },
       "clusterMembershipAfter": [
         31,
@@ -8917,7 +8917,7 @@
         85
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -9044,7 +9044,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1033,
+        "leaderTimeMs": 0.1069,
         "rekeyCount": 1,
         "messagesSent": 14,
         "bytesTransmitted": 784
@@ -9074,7 +9074,7 @@
         54
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -9159,17 +9159,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.071000000000000008,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -9297,17 +9297,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 280,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0859,
+        "leaderTimeMs": 0.08,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 5,
+        "bytesTransmitted": 280
       },
       "clusterMembershipAfter": [
         11,
@@ -9431,17 +9431,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 168,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0903,
+        "leaderTimeMs": 0.088399999999999992,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 3,
+        "bytesTransmitted": 168
       },
       "clusterMembershipAfter": [
         11,
@@ -9465,7 +9465,7 @@
         86
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -9571,7 +9571,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0821,
+        "leaderTimeMs": 0.1078,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -9810,17 +9810,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.40640000000000004,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         14,
@@ -9842,7 +9842,7 @@
         87
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -9976,7 +9976,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1108,
+        "leaderTimeMs": 0.1021,
         "rekeyCount": 1,
         "messagesSent": 15,
         "bytesTransmitted": 840
@@ -10127,17 +10127,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 784,
+          "bytes": 280,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 13,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.9453,
+        "leaderTimeMs": 0.843,
         "rekeyCount": 1,
-        "messagesSent": 14,
-        "bytesTransmitted": 784
+        "messagesSent": 5,
+        "bytesTransmitted": 280
       },
       "clusterMembershipAfter": [
         45,
@@ -10164,7 +10164,7 @@
         88
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -10263,7 +10263,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0781,
+        "leaderTimeMs": 0.0779,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -10381,17 +10381,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 168,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0704,
+        "leaderTimeMs": 0.062299999999999994,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 3,
+        "bytesTransmitted": 168
       },
       "clusterMembershipAfter": [
         21,
@@ -10671,17 +10671,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 672,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 11,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0054,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 12,
-        "bytesTransmitted": 672
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         45,
@@ -10706,7 +10706,7 @@
         89
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -10812,7 +10812,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0736,
+        "leaderTimeMs": 0.0791,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -10839,7 +10839,7 @@
         23
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -10931,17 +10931,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0753,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         21,
@@ -10964,7 +10964,7 @@
         90
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11063,7 +11063,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0714,
+        "leaderTimeMs": 0.0815,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -11089,7 +11089,7 @@
         91
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11174,7 +11174,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0601,
+        "leaderTimeMs": 0.0662,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -11199,7 +11199,7 @@
         61
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11298,17 +11298,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0789,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         45,
@@ -11332,7 +11332,7 @@
         83
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11424,17 +11424,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.079300000000000009,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         45,
@@ -11457,7 +11457,7 @@
         92
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11563,7 +11563,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0799,
+        "leaderTimeMs": 0.0823,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -11590,7 +11590,7 @@
         63
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11682,17 +11682,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.074400000000000008,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         31,
@@ -11715,7 +11715,7 @@
         93
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11821,7 +11821,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0805,
+        "leaderTimeMs": 0.10959999999999999,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -11848,7 +11848,7 @@
         94
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -11954,7 +11954,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0759,
+        "leaderTimeMs": 0.0817,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -11981,7 +11981,7 @@
         95
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12094,7 +12094,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0792,
+        "leaderTimeMs": 0.0925,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -12122,7 +12122,7 @@
         96
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12228,7 +12228,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0766,
+        "leaderTimeMs": 0.08270000000000001,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12255,7 +12255,7 @@
         97
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12361,7 +12361,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.072899999999999993,
+        "leaderTimeMs": 0.1275,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12388,7 +12388,7 @@
         98
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12501,7 +12501,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0787,
+        "leaderTimeMs": 0.0902,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -12529,7 +12529,7 @@
         99
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12649,7 +12649,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0819,
+        "leaderTimeMs": 0.0877,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -12770,17 +12770,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 560,
+          "bytes": 224,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 9,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0673,
+        "leaderTimeMs": 0.0812,
         "rekeyCount": 1,
-        "messagesSent": 10,
-        "bytesTransmitted": 560
+        "messagesSent": 4,
+        "bytesTransmitted": 224
       },
       "clusterMembershipAfter": [
         14,
@@ -12803,7 +12803,7 @@
         57
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -12874,17 +12874,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 448,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 7,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0531,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 8,
-        "bytesTransmitted": 448
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         1,
@@ -12969,17 +12969,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 392,
+          "bytes": 336,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 6,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.14889999999999998,
+        "leaderTimeMs": 0.1614,
         "rekeyCount": 1,
-        "messagesSent": 7,
-        "bytesTransmitted": 392
+        "messagesSent": 6,
+        "bytesTransmitted": 336
       },
       "clusterMembershipAfter": [
         1,
@@ -13098,17 +13098,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 616,
+          "bytes": 224,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 10,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.079,
+        "leaderTimeMs": 0.0821,
         "rekeyCount": 1,
-        "messagesSent": 11,
-        "bytesTransmitted": 616
+        "messagesSent": 4,
+        "bytesTransmitted": 224
       },
       "clusterMembershipAfter": [
         21,
@@ -13132,7 +13132,7 @@
         100
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -13245,7 +13245,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0859,
+        "leaderTimeMs": 0.1085,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -13360,7 +13360,7 @@
         101
       ],
       "isCollateralBatch": false,
-      "predictionHit": true,
+      "predictionHit": null,
       "nodePositions": [
         {
           "uavId": 1,
@@ -13473,7 +13473,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0855,
+        "leaderTimeMs": 0.0919,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -13501,7 +13501,7 @@
         51
       ],
       "isCollateralBatch": false,
-      "predictionHit": false,
+      "predictionHit": true,
       "nodePositions": [
         {
           "uavId": 1,
@@ -13586,17 +13586,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 504,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 8,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0641,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 9,
-        "bytesTransmitted": 504
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         14,
@@ -13669,17 +13669,17 @@
         {
           "from": "CH",
           "to": "follower",
-          "bytes": 280,
+          "bytes": 56,
           "kind": "CH_TO_FOLLOWER",
           "fanout": 4,
           "fragmentsCount": 1
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0067,
+        "leaderTimeMs": 0.005,
         "rekeyCount": 1,
-        "messagesSent": 5,
-        "bytesTransmitted": 280
+        "messagesSent": 1,
+        "bytesTransmitted": 56
       },
       "clusterMembershipAfter": [
         5,

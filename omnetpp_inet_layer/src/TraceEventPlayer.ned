@@ -19,6 +19,7 @@ simple TraceEventPlayer
         double bitrateMbps = default(6.0);
         double pLossExtra = default(0.0);
         double retryTimeoutMultiplier = default(3.0);
+        double relayJitterMaxMs = default(2.0);
         int rngSeed = default(42);
         @display("i=block/cogwheel");
         @signal[rekeyLatency](type=double);

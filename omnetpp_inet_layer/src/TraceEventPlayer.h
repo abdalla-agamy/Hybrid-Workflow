@@ -218,6 +218,8 @@ private:
     void startNextHopInEvent();
     void launchBroadcastDirectWave();
     void launchBroadcastRelayWave();
+    void scheduleStaggeredRelayDispatch(size_t pos, double delaySec);
+    void clearPendingRelayTimers();
     void dispatchTx(ActiveTx& tx, const std::vector<int>& receivers);
     void armStageTimer(int totalPayloadBitsEstimate, int txCount);
     void checkCurrentStageCompletion();
@@ -238,6 +240,7 @@ private:
     double bitrateMbps_ = 6.0;
     double pLossExtra_ = 0.0;
     double retryTimeoutMultiplier_ = 3.0;
+    double relayJitterMaxMs_ = 2.0;
 
     // Host slots
     int numUavs_ = 0;
@@ -251,6 +254,7 @@ private:
     omnetpp::cMessage* stepTimer_ = nullptr;
     omnetpp::cMessage* netStartTimer_ = nullptr;
     omnetpp::cMessage* stageTimeoutTimer_ = nullptr;
+    std::unordered_map<omnetpp::cMessage*, std::pair<int, size_t> > pendingRelayTimers_;
 
     // Event & stage state machine
     size_t curEvIdx_ = 0;

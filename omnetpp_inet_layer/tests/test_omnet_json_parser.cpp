@@ -29,7 +29,7 @@ int main() {
     const ExpectedTraceStats specs[5] = {
         {"FlatSBP", 298984LL, 90, 0},
         {"HSBP",    61040LL,  90, 0},
-        {"DTHSBP",  58800LL,  90, 4},
+        {"DTHSBP",  37520LL,  90, 4},
         {"LKH",     30768LL,  90, 0},
         {"TGDH",    51072LL,  90, 0}
     };

@@ -195,6 +195,58 @@ classdef TestTraceExporter < matlab.unittest.TestCase
                 end
             end
         end
+
+        function testDTHSBPLifespanSortingSavings(testCase)
+            % Verify Contribution A O(1) tail truncation on predicted leaves at N=250.
+            dtFile = fullfile(testCase.hybridRoot, 'traces', 'runs', 'events_trace_DTHSBP_N250.json');
+            hsFile = fullfile(testCase.hybridRoot, 'traces', 'runs', 'events_trace_HSBP_N250.json');
+            testCase.verifyTrue(isfile(dtFile));
+            testCase.verifyTrue(isfile(hsFile));
+
+            dtData = jsondecode(fileread(dtFile));
+            hsData = jsondecode(fileread(hsFile));
+
+            dtTotalBytes = 0;
+            dtDepBytes = 0;
+            hsTotalBytes = 0;
+            hsDepBytes = 0;
+            hitCount = 0;
+
+            for i = 1:numel(dtData.events)
+                ev = dtData.events(i);
+                b = double(ev.crypto.bytesTransmitted);
+                dtTotalBytes = dtTotalBytes + b;
+                if ismember(char(ev.type), {'leave', 'dtPredictedDeparture', 'failure'})
+                    dtDepBytes = dtDepBytes + b;
+                    if islogical(ev.predictionHit) && ev.predictionHit
+                        hitCount = hitCount + 1;
+                        testCase.verifyEqual(double(ev.crypto.messagesSent), 1, ...
+                            sprintf('Expected O(1)=1 msg on predictionHit at t=%.2f', ev.t));
+                        testCase.verifyEqual(b, 56, ...
+                            sprintf('Expected 56 B on predictionHit at t=%.2f', ev.t));
+                        testCase.verifyEqual(double(ev.hops(2).bytes), 56);
+                        testCase.verifyEqual(double(ev.hops(2).fragmentsCount), 1);
+                    end
+                end
+            end
+
+            for i = 1:numel(hsData.events)
+                ev = hsData.events(i);
+                b = double(ev.crypto.bytesTransmitted);
+                hsTotalBytes = hsTotalBytes + b;
+                if ismember(char(ev.type), {'leave', 'dtPredictedDeparture', 'failure'})
+                    hsDepBytes = hsDepBytes + b;
+                end
+            end
+
+            depReduction = 1.0 - (dtDepBytes / hsDepBytes);
+            totalReduction = 1.0 - (dtTotalBytes / hsTotalBytes);
+            testCase.verifyGreaterThan(hitCount, 15);
+            testCase.verifyGreaterThanOrEqual(depReduction, 0.70, ...
+                sprintf('Expected >=70%% departure byte reduction vs HSBP, got %.2f%%', depReduction * 100));
+            testCase.verifyGreaterThanOrEqual(totalReduction, 0.35, ...
+                sprintf('Expected >=35%% total byte reduction vs HSBP, got %.2f%%', totalReduction * 100));
+        end
     end
 
     methods (Access = private)

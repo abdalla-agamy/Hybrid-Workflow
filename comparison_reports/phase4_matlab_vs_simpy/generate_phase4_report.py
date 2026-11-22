@@ -484,6 +484,29 @@ def write_markdown_report(
     sec1 = baseline["section1_dthsbp"]
     sec4 = baseline["section4_overall"]
 
+    flat_air_savings = []
+    flat_lat_savings = []
+    for _, row_dt in df[df["protocol"] == "DTHSBP"].iterrows():
+        row_fl = df[
+            (df["protocol"] == "FlatSBP")
+            & (df["swarm_size"] == row_dt["swarm_size"])
+            & (df["p_loss"] == row_dt["p_loss"])
+            & (df["data_rate_mbps"] == row_dt["data_rate_mbps"])
+        ].iloc[0]
+        flat_air_savings.append(100.0 * (1.0 - float(row_dt["total_bytes_on_air"]) / float(row_fl["total_bytes_on_air"])))
+        flat_lat_savings.append(100.0 * (1.0 - float(row_dt["mean_rekey_completion_latency_ms"]) / float(row_fl["mean_rekey_completion_latency_ms"])))
+    flat_air_lo, flat_air_hi = min(flat_air_savings), max(flat_air_savings)
+    flat_lat_lo, flat_lat_hi = min(flat_lat_savings), max(flat_lat_savings)
+
+    all_6m_hsbp_vals = [v for vals in f4["simpy_hsbp_savings_pct_6mbps"].values() for v in vals]
+    hsbp_6m_lo, hsbp_6m_hi = min(all_6m_hsbp_vals), max(all_6m_vals := all_6m_hsbp_vals)
+    best_sav_info = max(
+        ((loss_lbl, n_val, vals[idx]) for loss_lbl, vals in f4["simpy_hsbp_savings_pct_6mbps"].items() for idx, n_val in enumerate(sorted(df["swarm_size"].unique()))),
+        key=lambda item: item[2],
+    )
+    amp_vals = [f1[p]["amp_15_vs_matlab"] for p in PROTOCOLS]
+    amp_lo, amp_hi = min(amp_vals), max(amp_vals)
+
     md_text = f"""# Phase 4 Comparative Technical Report: MATLAB Analytical Baseline vs. SimPy CSMA/CA Network Replay
 
 **Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  
@@ -496,10 +519,10 @@ def write_markdown_report(
 
 In the original MATLAB DES (`./DT-HSBP`), rekey communication is evaluated purely analytically: messages consume zero airtime, suffer `0%` packet loss, trigger zero CSMA/CA backoff collisions, and traverse multi-hop topologies at infinite bandwidth. By exporting deterministic **paired event traces** (identical exogenous Poisson arrivals, continuous specular-reflected 2D trajectories, and synchronized DT hazard draws) and replaying all five protocols over our Phase 3 SimPy wireless stack (log-distance shadowing + Gilbert-Elliott bursty PER + `700 m` spatial CSMA/CA + `1500 B` MTU fragmentation + BFS multi-hop relay), this report quantifies the exact gap across the **system evaluation boundary**:
 
-1. **Multi-Hop + MAC Traffic Amplification (`3.8x – 26.2x`)**: At `N = 1,000` (`6 Mbps`, `p_loss = 0.15`), actual on-air bytes are **`{f1['FlatSBP']['amp_15_vs_matlab']:.1f}x`** higher than MATLAB's analytical byte count for `FlatSBP`, **`{f1['HSBP']['amp_15_vs_matlab']:.1f}x`** for `HSBP`, **`{f1['DTHSBP']['amp_15_vs_matlab']:.1f}x`** for `DTHSBP`, **`{f1['LKH']['amp_15_vs_matlab']:.1f}x`** for `LKH`, and **`{f1['TGDH']['amp_15_vs_matlab']:.1f}x`** for `TGDH`.
+1. **Multi-Hop + MAC Traffic Amplification (`{amp_lo:.1f}x – {amp_hi:.1f}x`)**: At `N = 1,000` (`6 Mbps`, `p_loss = 0.15`), actual on-air bytes are **`{f1['FlatSBP']['amp_15_vs_matlab']:.1f}x`** higher than MATLAB's analytical byte count for `FlatSBP`, **`{f1['HSBP']['amp_15_vs_matlab']:.1f}x`** for `HSBP`, **`{f1['DTHSBP']['amp_15_vs_matlab']:.1f}x`** for `DTHSBP`, **`{f1['LKH']['amp_15_vs_matlab']:.1f}x`** for `LKH`, and **`{f1['TGDH']['amp_15_vs_matlab']:.1f}x`** for `TGDH`.
 2. **Network Delay Dominates Crypto Latency (`> 95%` at Scale)**: At `N = 250` (`p_loss = 0.05`, `6 Mbps`), wireless CSMA/CA serialization, backoff, and multi-hop forwarding account for **`{f2['DTHSBP_6M']['net_pct']:.2f}%`** of `DTHSBP` completion latency (`{f2['DTHSBP_6M']['network_ms']:.2f} ms` vs. `{f2['DTHSBP_6M']['crypto_ms']:.3f} ms` crypto time) and **`{f2['FlatSBP_6M']['net_pct']:.2f}%`** of `FlatSBP` latency (`{f2['FlatSBP_6M']['network_ms']:.2f} ms`).
-3. **End-to-End `DT-HSBP` Advantage Persists Under Contention & Loss**: Across all **40** grid points (`N in {{50..1000}}`, `p_loss in {{0.0..0.15}}`, `6` & `54 Mbps`), `DT-HSBP` slashes on-air bytes by **`~51%–77%`** and end-to-end latency by **`~74%–95%`** relative to `Flat-SBP`, while outperforming reactive `HSBP` at every dense swarm point (`N >= 100`) — saving up to **`{max(max(v) for v in f4['simpy_hsbp_savings_pct_6mbps'].values()):.1f}%`** air traffic at `N = 100`.
-4. **Rate-Dependent `LKH`/`TGDH` vs. `DT-HSBP` Crossover**: Because baseline `RekeyManager.m` transmits `nc * 56 B` (`2,800 B` at `N=250`, `11,200 B` at `N=1,000`) while `LKH`/`TGDH` send compact `48 B` / `128 B` `O(log N)` messages, high-rate `54 Mbps` links reveal multi-round tree handshake penalties (`LKH` & `TGDH` slower than `DT-HSBP` at `N <= 100`, and `TGDH` slower through `N = 250`), whereas slow `6 Mbps` serialization at `N >= 250` reverses the latency ordering.
+3. **End-to-End `DT-HSBP` Advantage Persists Under Contention & Loss**: Across all **40** grid points (`N in {{50..1000}}`, `p_loss in {{0.0..0.15}}`, `6` & `54 Mbps`), `DT-HSBP` slashes on-air bytes by **`{flat_air_lo:.1f}%–{flat_air_hi:.1f}%`** and end-to-end latency by **`{flat_lat_lo:.1f}%–{flat_lat_hi:.1f}%`** relative to `Flat-SBP`, while outperforming reactive `HSBP` across every dense swarm point (`N >= 100`) — saving up to **`{best_sav_info[2]:.1f}%`** air traffic at `N = {best_sav_info[1]}` (`{best_sav_info[0]}`).
+4. **Rate-Dependent `LKH`/`TGDH` vs. `DT-HSBP` Crossover**: Because joins use `nc * 56 B` (`2,800 B` at `N=250`, `11,200 B` at `N=1,000`) while `DT-HSBP` lifespan-sorted tail departures truncate to `56 B` (`eta = 0.85`) and `LKH`/`TGDH` send compact `48 B` / `128 B` `O(log N)` messages across tree rounds, high-rate `54 Mbps` links reveal multi-round tree handshake penalties (`LKH` & `TGDH` slower than `DT-HSBP` at `N <= 100`, and `TGDH` slower through `N = 250`), whereas slow `6 Mbps` serialization at `N = 1,000` still reflects join/cascade payload differences.
 
 ---
 
@@ -538,10 +561,10 @@ Panel (a) isolates how misleading crypto-only latency benchmarks can be over sha
 1. **Sparse vs. Dense Spatial Connectivity**: At `N = 50` in `1,000 x 1,000 m` (`comm_range = 350 m`), random UAV motion yields occasional boundary partitions, bounding zero-loss `mean_key_sync_ratio` to `0.901–0.921`. At denser scales (`N >= 100`), lossless `mean_key_sync_ratio` reaches **`99.8%–100.0%`** across all five protocols.
 2. **Bursty Loss Resilience**: Moving from `p_loss = 0.0` to `0.15` at `N = 250` (`6 Mbps`) lowers `DT-HSBP` PDR from `{f3['DTHSBP']['n250_p0_pdr_pct']:.2f}%` to `{f3['DTHSBP']['n250_p15_pdr_pct']:.2f}%` and key sync ratio to `{f3['DTHSBP']['n250_p15_sync_pct']:.2f}%` (`{f3['DTHSBP']['n1000_p15_sync_pct']:.2f}%` at `N = 1,000`), while triggering ARQ retries and higher channel busy times that cannot be observed in MATLAB.
 
-### 4.4 Digital-Twin Collateral Batching Gains in Wireless Channels
+### 4.4 Digital-Twin Collateral Batching & Lifespan Sorting Gains in Wireless Channels
 ![Figure 4: DT Batch Efficiency Under Loss](fig4_dt_batch_efficiency_under_loss.png)
 
-In the 60-second Poisson traces (`N = 50..1,000`), `DT-HSBP` converts individual predicted physical departures into **4–5** consolidated cluster batches (`{f4['dt_predicted_events_total']}` predicted events across the 200-run sweep). Across all dense swarms (`N >= 100`), this reduces on-air bytes vs. reactive `HSBP` cleanly (`~5%–11%` across the full 60 s mixed-event window, including `{f4['collisions_hsbp_n1000_p05']:,} -> {f4['collisions_dthsbp_n1000_p05']:,}` MAC collisions at `N = 1,000, p_loss = 0.05, 6 Mbps`). When evaluated purely on burst collateral leave episodes (`M = 25`, Panel (a)), savings scale to **`{f4['section6_m25_saving_pct']:.2f}%`**.
+In the 100-second Poisson traces (`N = 50..1,000`), `DT-HSBP` combines Contribution A lifespan-sorted `O(1)` tail truncation (`eta = 0.85`) with **4–5** consolidated collateral departure batches (`{f4['dt_predicted_events_total']}` predicted events across the 200-run sweep). Across all swarms (`N >= 50`), this reduces on-air bytes vs. reactive `HSBP` by **`{hsbp_6m_lo:.1f}%–{hsbp_6m_hi:.1f}%`** across the mixed-event window (including `{f4['collisions_hsbp_n1000_p05']:,} -> {f4['collisions_dthsbp_n1000_p05']:,}` MAC collisions at `N = 1,000, p_loss = 0.05, 6 Mbps`). When evaluated purely on burst collateral leave episodes (`M = 25`, Panel (a)), savings scale to **`{f4['section6_m25_saving_pct']:.2f}%`**.
 
 ---
 
@@ -715,11 +738,12 @@ def build_pdf_report(
         HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#0F4C81"), spaceAfter=8)
     )
 
+    amp_vals_pdf = [f1[p]["amp_15_vs_matlab"] for p in PROTOCOLS]
     exec_html = (
         f"<b>Executive Summary:</b> Replaying exact deterministic MATLAB Poisson event traces "
         f"({summary_meta['total_runs']} sweep configurations, {summary_meta['total_events']:,} protocol events) "
         f"through an 802.11-style spatial CSMA/CA and Gilbert-Elliott channel stack exposes the system evaluation boundary:<br/><br/>"
-        f"<b>1. Wireless Traffic Amplification (3.8x–26.2x):</b> At N=1,000 (6 Mbps, p_loss=0.15), real multi-hop air bytes "
+        f"<b>1. Wireless Traffic Amplification ({min(amp_vals_pdf):.1f}x–{max(amp_vals_pdf):.1f}x):</b> At N=1,000 (6 Mbps, p_loss=0.15), real multi-hop air bytes "
         f"reach <b>{f1['DTHSBP']['amp_15_vs_matlab']:.1f}x</b> MATLAB logical crypto volume for DT-HSBP and "
         f"<b>{f1['TGDH']['amp_15_vs_matlab']:.1f}x</b> for TGDH due to cross-cluster forwarding and retransmissions.<br/>"
         f"<b>2. Network Latency Dominance:</b> At N=250 (p_loss=0.05, 6 Mbps), <b>{f2['DTHSBP_6M']['net_pct']:.1f}%</b> "

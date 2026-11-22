@@ -308,9 +308,6 @@ classdef Simulation < handle
             
             if obj.isTraceExportEnabled()
                 hitVal = NaN;
-                if strcmp(char(obj.protocolName), "DTHSBP")
-                    hitVal = true;
-                end
                 obj.recordTraceEvent("join", clusterID, uavID, false, hitVal, rekeyResult);
             end
         end

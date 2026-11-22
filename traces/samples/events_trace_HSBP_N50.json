@@ -16,7 +16,7 @@
     "packetSize": 256,
     "mtu": 1500,
     "generatedBy": "DT-HSBP MATLAB Simulation (TraceExporter)",
-    "generatedAt": "2026-11-14T16:57:05Z"
+    "generatedAt": "2026-11-22T07:02:04Z"
   },
   "initialNodes": [
     {
@@ -635,7 +635,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.4948,
+        "leaderTimeMs": 0.5485000000000001,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -775,7 +775,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3223,
+        "leaderTimeMs": 0.3458,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -895,7 +895,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.4652,
+        "leaderTimeMs": 0.48910000000000003,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -1160,7 +1160,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.33849999999999997,
+        "leaderTimeMs": 0.4643,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -1300,7 +1300,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3191,
+        "leaderTimeMs": 0.3277,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -1434,7 +1434,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3227,
+        "leaderTimeMs": 0.3499,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -1560,7 +1560,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.30610000000000004,
+        "leaderTimeMs": 0.3512,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -1706,7 +1706,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.8186,
+        "leaderTimeMs": 0.79980000000000007,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -1841,7 +1841,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1293,
+        "leaderTimeMs": 0.1537,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -1953,7 +1953,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.32489999999999997,
+        "leaderTimeMs": 0.3186,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -2070,7 +2070,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0766,
+        "leaderTimeMs": 0.0795,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -2202,7 +2202,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0829,
+        "leaderTimeMs": 0.0841,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -2342,7 +2342,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.6866,
+        "leaderTimeMs": 0.8203,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -2455,7 +2455,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.11120000000000001,
+        "leaderTimeMs": 0.1325,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -2558,7 +2558,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.064,
+        "leaderTimeMs": 0.061500000000000006,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -2681,7 +2681,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.064999999999999988,
+        "leaderTimeMs": 0.075400000000000009,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -2820,7 +2820,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.09459999999999999,
+        "leaderTimeMs": 0.0984,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -2947,7 +2947,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0887,
+        "leaderTimeMs": 0.0805,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -3079,7 +3079,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0965,
+        "leaderTimeMs": 0.0945,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -3198,7 +3198,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0725,
+        "leaderTimeMs": 0.0773,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -3329,7 +3329,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0848,
+        "leaderTimeMs": 0.0923,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -3455,7 +3455,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0721,
+        "leaderTimeMs": 0.0752,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -3580,7 +3580,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3909,
+        "leaderTimeMs": 0.44739999999999996,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -3712,7 +3712,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0836,
+        "leaderTimeMs": 0.0924,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -3831,7 +3831,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0674,
+        "leaderTimeMs": 0.0727,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -3955,7 +3955,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0757,
+        "leaderTimeMs": 0.0798,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -4087,7 +4087,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.080099999999999991,
+        "leaderTimeMs": 0.0902,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -4213,7 +4213,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0747,
+        "leaderTimeMs": 0.0817,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -4345,7 +4345,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0802,
+        "leaderTimeMs": 0.0893,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -4485,7 +4485,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0855,
+        "leaderTimeMs": 0.11069999999999999,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -4633,7 +4633,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0965,
+        "leaderTimeMs": 0.10239999999999999,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -4768,7 +4768,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0768,
+        "leaderTimeMs": 0.0897,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -4908,7 +4908,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3387,
+        "leaderTimeMs": 0.41960000000000003,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5007,7 +5007,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0636,
+        "leaderTimeMs": 0.063800000000000009,
         "rekeyCount": 1,
         "messagesSent": 7,
         "bytesTransmitted": 392
@@ -5143,7 +5143,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.133,
+        "leaderTimeMs": 0.0945,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5270,7 +5270,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0719,
+        "leaderTimeMs": 0.072000000000000008,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -5416,7 +5416,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0953,
+        "leaderTimeMs": 0.1066,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -5551,7 +5551,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0778,
+        "leaderTimeMs": 0.0943,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -5691,7 +5691,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0826,
+        "leaderTimeMs": 0.088399999999999992,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5832,7 +5832,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0852,
+        "leaderTimeMs": 0.0959,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -5980,7 +5980,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1095,
+        "leaderTimeMs": 0.0901,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -6087,7 +6087,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0608,
+        "leaderTimeMs": 0.0983,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -6224,7 +6224,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0847,
+        "leaderTimeMs": 0.0914,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -6358,7 +6358,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.077,
+        "leaderTimeMs": 0.1314,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -6498,7 +6498,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0877,
+        "leaderTimeMs": 0.10160000000000001,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -6639,7 +6639,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.10179999999999999,
+        "leaderTimeMs": 0.1023,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -6787,7 +6787,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.101,
+        "leaderTimeMs": 0.0987,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -6936,7 +6936,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0906,
+        "leaderTimeMs": 0.0875,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -7050,7 +7050,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.079300000000000009,
+        "leaderTimeMs": 0.068200000000000011,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -7153,7 +7153,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0635,
+        "leaderTimeMs": 0.0599,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -7290,7 +7290,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1098,
+        "leaderTimeMs": 0.0968,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -7424,7 +7424,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3525,
+        "leaderTimeMs": 0.325,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -7578,7 +7578,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1167,
+        "leaderTimeMs": 0.11699999999999999,
         "rekeyCount": 1,
         "messagesSent": 14,
         "bytesTransmitted": 784
@@ -7693,7 +7693,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.072299999999999989,
+        "leaderTimeMs": 0.076,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -7824,7 +7824,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0854,
+        "leaderTimeMs": 0.0838,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -7964,7 +7964,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.090000000000000011,
+        "leaderTimeMs": 0.095,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -8098,7 +8098,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1052,
+        "leaderTimeMs": 0.0871,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -8245,7 +8245,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.3313,
+        "leaderTimeMs": 0.32449999999999996,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -8387,7 +8387,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0887,
+        "leaderTimeMs": 0.107,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -8535,7 +8535,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.093900000000000011,
+        "leaderTimeMs": 0.15510000000000002,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -8642,7 +8642,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.057800000000000004,
+        "leaderTimeMs": 0.12029999999999999,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -8765,7 +8765,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0701,
+        "leaderTimeMs": 0.082200000000000009,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -8897,7 +8897,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0826,
+        "leaderTimeMs": 0.093,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -9023,7 +9023,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0713,
+        "leaderTimeMs": 0.0785,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -9176,7 +9176,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.103,
+        "leaderTimeMs": 0.11220000000000001,
         "rekeyCount": 1,
         "messagesSent": 14,
         "bytesTransmitted": 784
@@ -9298,7 +9298,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0699,
+        "leaderTimeMs": 0.0811,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -9436,7 +9436,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.081,
+        "leaderTimeMs": 0.0876,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -9570,7 +9570,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0833,
+        "leaderTimeMs": 0.0891,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -9703,7 +9703,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0962,
+        "leaderTimeMs": 0.095199999999999993,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -9955,7 +9955,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.087,
+        "leaderTimeMs": 0.1182,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -10073,7 +10073,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0699,
+        "leaderTimeMs": 0.072899999999999993,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -10232,7 +10232,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1254,
+        "leaderTimeMs": 0.1187,
         "rekeyCount": 1,
         "messagesSent": 15,
         "bytesTransmitted": 840
@@ -10390,7 +10390,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.7592,
+        "leaderTimeMs": 0.8085,
         "rekeyCount": 1,
         "messagesSent": 14,
         "bytesTransmitted": 784
@@ -10519,7 +10519,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.073399999999999993,
+        "leaderTimeMs": 0.0881,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -10644,7 +10644,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0654,
+        "leaderTimeMs": 0.073399999999999993,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -10940,7 +10940,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0965,
+        "leaderTimeMs": 0.10569999999999999,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -11082,7 +11082,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.08270000000000001,
+        "leaderTimeMs": 0.0872,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -11216,7 +11216,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0737,
+        "leaderTimeMs": 0.0731,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -11342,7 +11342,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0674,
+        "leaderTimeMs": 0.0672,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -11467,7 +11467,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.074400000000000008,
+        "leaderTimeMs": 0.0888,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -11578,7 +11578,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0603,
+        "leaderTimeMs": 0.0606,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -11709,7 +11709,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0811,
+        "leaderTimeMs": 0.0742,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -11835,7 +11835,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0836,
+        "leaderTimeMs": 0.0786,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -11967,7 +11967,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0812,
+        "leaderTimeMs": 0.090699999999999989,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12093,7 +12093,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0736,
+        "leaderTimeMs": 0.0803,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -12225,7 +12225,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0807,
+        "leaderTimeMs": 0.093800000000000008,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12358,7 +12358,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0707,
+        "leaderTimeMs": 0.087899999999999992,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12498,7 +12498,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0748,
+        "leaderTimeMs": 0.092,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -12632,7 +12632,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0852,
+        "leaderTimeMs": 0.0791,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12765,7 +12765,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0927,
+        "leaderTimeMs": 0.087299999999999989,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -12905,7 +12905,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0779,
+        "leaderTimeMs": 0.0915,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -13053,7 +13053,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.091199999999999989,
+        "leaderTimeMs": 0.10189999999999999,
         "rekeyCount": 1,
         "messagesSent": 13,
         "bytesTransmitted": 728
@@ -13181,7 +13181,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0816,
+        "leaderTimeMs": 0.074400000000000008,
         "rekeyCount": 1,
         "messagesSent": 10,
         "bytesTransmitted": 560
@@ -13285,7 +13285,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.062,
+        "leaderTimeMs": 0.0652,
         "rekeyCount": 1,
         "messagesSent": 8,
         "bytesTransmitted": 448
@@ -13380,7 +13380,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.12380000000000001,
+        "leaderTimeMs": 0.1373,
         "rekeyCount": 1,
         "messagesSent": 7,
         "bytesTransmitted": 392
@@ -13509,7 +13509,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.080599999999999991,
+        "leaderTimeMs": 0.0936,
         "rekeyCount": 1,
         "messagesSent": 11,
         "bytesTransmitted": 616
@@ -13649,7 +13649,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.1023,
+        "leaderTimeMs": 0.1033,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -13877,7 +13877,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0994,
+        "leaderTimeMs": 0.0991,
         "rekeyCount": 1,
         "messagesSent": 12,
         "bytesTransmitted": 672
@@ -13997,7 +13997,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0731,
+        "leaderTimeMs": 0.0717,
         "rekeyCount": 1,
         "messagesSent": 9,
         "bytesTransmitted": 504
@@ -14086,7 +14086,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0598,
+        "leaderTimeMs": 0.0549,
         "rekeyCount": 1,
         "messagesSent": 6,
         "bytesTransmitted": 336
@@ -14165,7 +14165,7 @@
         }
       ],
       "crypto": {
-        "leaderTimeMs": 0.0524,
+        "leaderTimeMs": 0.047,
         "rekeyCount": 1,
         "messagesSent": 5,
         "bytesTransmitted": 280

@@ -142,19 +142,26 @@ classdef DTHSBP < HSBP
                 followerTime = toc(followerTimer);
 
                 result = obj.createRekeyResult(activeUAVs, clusterID);
-                result.leaderTime = leaderTime;
-                result.followerTime = followerTime;
+                [isHit, truncatedMsgs, adjLeaderTime] = obj.resolveLifespanDeparture( ...
+                    preSortedUAVs, activeUAVs, allDepartingIDs, isPrecomputedHit, ...
+                    ~isempty(predictedLeaves), leaderTime, uavID, 1);
+                result.messagesSent = truncatedMsgs;
+                result.leaderTime = adjLeaderTime;
                 result.predictedLeaves = predictedLeaves;
                 result.preSortedUAVs = preSortedUAVs;
                 result.intermediateChain = intermediateChain;
-                result.isPrecomputedHit = isPrecomputedHit;
+                result.isPrecomputedHit = isHit;
                 result.blindKeys = blindKeys;
             else
                 cluster.groupKey = [];
                 result = [];
             end
 
-            obj.addCost(cluster.count());
+            if ~isempty(result)
+                obj.addCost(result.messagesSent);
+            else
+                obj.addCost(0);
+            end
             obj.recordLeave();
         end
 
@@ -216,19 +223,27 @@ classdef DTHSBP < HSBP
                 followerTime = toc(followerTimer);
 
                 result = obj.createRekeyResult(activeUAVs, clusterID);
-                result.leaderTime = leaderTime;
+                [isHit, truncatedMsgs, adjLeaderTime] = obj.resolveLifespanDeparture( ...
+                    preSortedUAVs, activeUAVs, allDepartingIDs, isPrecomputedHit, ...
+                    ~isempty(predictedLeaves), leaderTime, uavID, 2);
+                result.messagesSent = truncatedMsgs;
+                result.leaderTime = adjLeaderTime;
                 result.followerTime = followerTime;
                 result.predictedLeaves = predictedLeaves;
                 result.preSortedUAVs = preSortedUAVs;
                 result.intermediateChain = intermediateChain;
-                result.isPrecomputedHit = isPrecomputedHit;
+                result.isPrecomputedHit = isHit;
                 result.blindKeys = blindKeys;
             else
                 cluster.groupKey = [];
                 result = [];
             end
 
-            obj.addCost(cluster.count());
+            if ~isempty(result)
+                obj.addCost(result.messagesSent);
+            else
+                obj.addCost(0);
+            end
             obj.recordFailure();
         end
 
@@ -269,6 +284,52 @@ classdef DTHSBP < HSBP
     end
 
     methods (Access = private)
+        function [isHit, msgs, adjLeaderTime] = resolveLifespanDeparture( ...
+                obj, preSortedUAVs, activeUAVs, allDepartingIDs, ...
+                isCacheHit, hasCollateral, leaderTime, uavID, kindTag)
+            enableSorting = ~isfield(obj.cfg, 'enableLifespanSorting') || ...
+                logical(obj.cfg.enableLifespanSorting);
+            eta = 0.85;
+            if isfield(obj.cfg, 'dtPredictionAccuracy') && ~isempty(obj.cfg.dtPredictionAccuracy)
+                eta = max(0.0, min(1.0, double(obj.cfg.dtPredictionAccuracy)));
+            end
+
+            isHit = logical(isCacheHit) || logical(hasCollateral);
+            if ~isHit && enableSorting && kindTag == 1
+                sPrev = rng;
+                restoreRng = onCleanup(@() rng(sPrev)); %#ok<NASGU>
+                baseSeed = 42;
+                if isfield(obj.cfg, 'randomSeed') && ~isempty(obj.cfg.randomSeed)
+                    baseSeed = round(double(obj.cfg.randomSeed));
+                end
+                tMs = round(obj.getCurrentTime(activeUAVs) * 1000);
+                localSeed = mod(baseSeed + (tMs + 7) * 2654435761 + ...
+                    round(double(uavID)) * 1013 + kindTag * 17, 4294967291);
+                rng(localSeed, 'twister');
+                isHit = (rand() <= eta);
+            end
+
+            adjLeaderTime = leaderTime;
+            if isHit
+                adjLeaderTime = min(leaderTime, 5e-6);
+            end
+
+            if ~enableSorting
+                msgs = numel(activeUAVs);
+            elseif isHit
+                msgs = 1;
+            else
+                preIDs = [preSortedUAVs.id];
+                matchIdx = find(ismember(preIDs, allDepartingIDs));
+                if isempty(matchIdx)
+                    kMin = 1;
+                else
+                    kMin = min(matchIdx);
+                end
+                msgs = max(1, min(numel(activeUAVs), numel(preSortedUAVs) - kMin));
+            end
+        end
+
         function predictedLeaves = collectPredictedLeaves(obj, cluster, excludedUAVID)
             predictedLeaves = [];
             if isempty(cluster)

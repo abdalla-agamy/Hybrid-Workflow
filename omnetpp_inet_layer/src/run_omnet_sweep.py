@@ -84,10 +84,10 @@ def _run_one(task: tuple[str, int, str, dict[str, str]]) -> tuple[str, int, str,
     return config_name, run_idx, label, proc.returncode, dt, msg
 
 
-def _is_run_complete(config_name: str, run_idx: int, proto_val: str) -> bool:
+def _is_run_complete(config_name: str, run_idx: int, rep_val: str, proto_val: str) -> bool:
     """Return True if this run already produced a valid scalar output (and event CSV if DynamicStochastic)."""
     results_dir = LAYER_ROOT / "results"
-    sca_path = results_dir / f"{config_name}-0-{run_idx}.sca"
+    sca_path = results_dir / f"{config_name}-{rep_val}-{run_idx}.sca"
     if not sca_path.exists():
         return False
     try:
@@ -132,8 +132,8 @@ def main() -> None:
         raise FileNotFoundError(f"Missing built simulation binary: {EXE_PATH}")
 
     env = _build_omnet_env()
-    seen_grid_points: set[tuple[str, str, str, str]] = set()
-    scheduled_tasks: list[tuple[tuple[int, int, int, float], tuple[str, int, str, dict[str, str]]]] = []
+    seen_grid_points: set[tuple[str, str, str, str, str]] = set()
+    scheduled_tasks: list[tuple[tuple[int, int, int, float, int], tuple[str, int, str, dict[str, str]]]] = []
     skipped_existing = 0
 
     for cfg in args.configs:
@@ -144,13 +144,16 @@ def main() -> None:
             rate_val = v.get("rate", "6")
             proto_val = v.get("proto", "")
             ploss_val = v.get("ploss", "0.05")
-            key = (proto_val, n_val, rate_val, ploss_val)
+            rep_val = v.get("repetition", "0")
 
-            if not args.no_dedup and key in seen_grid_points:
-                continue
-            seen_grid_points.add(key)
-            label = f"{proto_val}_N{n_val}_{rate_val}M_p{ploss_val}"
-            if not args.force and _is_run_complete(cfg, r_idx, proto_val):
+            if cfg != "DynamicStochastic":
+                key = (proto_val, n_val, rate_val, ploss_val, rep_val)
+                if not args.no_dedup and key in seen_grid_points:
+                    continue
+                seen_grid_points.add(key)
+
+            label = f"{proto_val}_N{n_val}_{rate_val}M_p{ploss_val}_r{rep_val}"
+            if not args.force and _is_run_complete(cfg, r_idx, rep_val, proto_val):
                 skipped_existing += 1
                 continue
             # Prioritize DynamicStochastic first, then ascend swarm size N (lightest first, FlatSBP after peers)
@@ -159,6 +162,7 @@ def main() -> None:
                 int(n_val),
                 0 if proto_val != "FlatSBP" else 1,
                 float(rate_val),
+                int(rep_val),
             )
             scheduled_tasks.append((order_key, (cfg, r_idx, label, env)))
             queued_here += 1

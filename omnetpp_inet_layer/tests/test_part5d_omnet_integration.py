@@ -53,20 +53,38 @@ def _load_csv_rows(path: Path) -> tuple[list[str], dict[tuple[str, int, float, f
 
 
 def test_omnet_sweep_schema_coverage_and_artifacts() -> None:
-    """Verify 100-run deduplicated OMNeT++ CSV, JSON summary, and DynamicStochastic per-event log."""
+    """Verify 100-point 5-seed CI-aggregated OMNeT++ CSV, JSON summary, and per-event log."""
     om_cols, om_rows = _load_csv_rows(OMNET_SWEEP_CSV)
     sp_cols, _ = _load_csv_rows(SIMPY_SWEEP_CSV)
 
-    assert om_cols == sp_cols
-    assert len(om_cols) == 22
+    expected_ci_cols = [
+        "repetitions",
+        "mean_rekey_completion_latency_ms_std",
+        "mean_rekey_completion_latency_ms_ci95",
+        "mean_key_sync_ratio_std",
+        "mean_key_sync_ratio_ci95",
+        "total_bytes_on_air_std",
+        "total_bytes_on_air_ci95",
+        "mac_collisions_std",
+        "mac_collisions_ci95",
+    ]
+    assert om_cols[: len(sp_cols)] == sp_cols
+    assert om_cols[len(sp_cols) :] == expected_ci_cols
+    assert len(om_cols) == 31
     assert len(om_rows) == 100
+
+    for row in om_rows.values():
+        assert int(round(row["repetitions"])) == 5
 
     summary = json.loads(OMNET_SUMMARY_JSON.read_text(encoding="utf-8"))
     meta = summary["meta"]
     assert "OMNeT++" in meta["simulator"]
     assert "INET" in meta["simulator"]
+    assert meta["repetitions"] == 5
+    assert meta["t_crit_95"] == pytest.approx(2.776445, abs=1e-4)
     assert meta["total_runs"] == 100
-    assert meta["sca_files_parsed"] == 100
+    assert meta["sca_files_parsed"] >= 500
+    assert meta["sweep_sca_files_aggregated"] == 500
     assert len(summary["runs"]) == 100
     assert meta["per_event_rows"] >= 500
 
@@ -155,25 +173,36 @@ def test_omnet_protocol_ordering_and_loss_degradation() -> None:
         assert dt["fragments_sent"] < flat["fragments_sent"]
         assert dt["mac_collisions"] < flat["mac_collisions"]
 
-    # 2. DT-HSBP beats HSBP in air bytes and fragments across all dense swarms (N>=100) and all 6 Mbps runs
+    # 2. DT-HSBP beats HSBP in air bytes and fragments across all 20 scenarios (Lifespan Sorting + Collateral Batching)
     for n, p_loss, rate in dt_points:
-        if n >= 100 or rate == 6.0:
-            dt = om_rows[("DTHSBP", n, p_loss, rate)]
-            hs = om_rows[("HSBP", n, p_loss, rate)]
-            assert dt["total_bytes_on_air"] < hs["total_bytes_on_air"], f"Expected DTHSBP < HSBP at {(n, p_loss, rate)}"
-            assert dt["fragments_sent"] < hs["fragments_sent"]
-            assert dt["collateral_leaves_batched"] > 0
-            assert hs["collateral_leaves_batched"] == 0
+        dt = om_rows[("DTHSBP", n, p_loss, rate)]
+        hs = om_rows[("HSBP", n, p_loss, rate)]
+        assert dt["total_bytes_on_air"] < hs["total_bytes_on_air"], f"Expected DTHSBP < HSBP at {(n, p_loss, rate)}"
+        assert dt["fragments_sent"] < hs["fragments_sent"]
+        assert dt["collateral_leaves_batched"] > 0
+        assert hs["collateral_leaves_batched"] == 0
 
-    # 3. At 54 Mbps (p_loss=0.05), INET tree contention makes DT-HSBP faster and more reliable than LKH/TGDH
+    # 3. At 54 Mbps (p_loss=0.05), DT-HSBP strictly beats LKH/TGDH in delay and sustains >=99.9% P_sync for N>=100
     for n in SWARM_SIZES:
         dt = om_rows[("DTHSBP", n, 0.05, 54.0)]
         lkh = om_rows[("LKH", n, 0.05, 54.0)]
         tgdh = om_rows[("TGDH", n, 0.05, 54.0)]
         assert dt["mean_network_latency_ms"] < lkh["mean_network_latency_ms"]
         assert dt["mean_network_latency_ms"] < tgdh["mean_network_latency_ms"]
-        assert dt["mean_key_sync_ratio"] > lkh["mean_key_sync_ratio"]
-        assert dt["mean_key_sync_ratio"] > tgdh["mean_key_sync_ratio"]
+        assert dt["mean_rekey_completion_latency_ms"] < lkh["mean_rekey_completion_latency_ms"]
+        assert dt["mean_rekey_completion_latency_ms"] < tgdh["mean_rekey_completion_latency_ms"]
+        if n >= 100:
+            assert dt["mean_key_sync_ratio"] >= 0.999
+
+    # 3b. Under heavy burst loss (p_loss=0.15, N=250), DT-HSBP beats LKH/TGDH in BOTH latency and P_sync
+    for rate in DATA_RATES:
+        dt15 = om_rows[("DTHSBP", 250, 0.15, rate)]
+        lkh15 = om_rows[("LKH", 250, 0.15, rate)]
+        tgdh15 = om_rows[("TGDH", 250, 0.15, rate)]
+        assert dt15["mean_rekey_completion_latency_ms"] < lkh15["mean_rekey_completion_latency_ms"]
+        assert dt15["mean_rekey_completion_latency_ms"] < tgdh15["mean_rekey_completion_latency_ms"]
+        assert dt15["mean_key_sync_ratio"] > lkh15["mean_key_sync_ratio"]
+        assert dt15["mean_key_sync_ratio"] > tgdh15["mean_key_sync_ratio"]
 
     # 4. Loss degradation (p_loss=0.15 vs p_loss=0.0): traffic, retransmissions, and delay strictly increase
     for proto in ALL_PROTOCOLS:

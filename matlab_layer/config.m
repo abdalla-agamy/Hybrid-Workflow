@@ -101,6 +101,8 @@ cfg.residualWeights.keySynced = 1.0;
 % ================================
 cfg.sortWeightEnergy    = 1.0;   % w1: battery energy weight
 cfg.sortWeightStability = 1.0;   % w2: kinematic stability penalty weight
+cfg.enableLifespanSorting = true;
+cfg.dtPredictionAccuracy  = 0.85;  % Baseline DT hazard prediction accuracy (eta)
 
 cfg.randomSeed   = 42;
 
