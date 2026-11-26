@@ -35,6 +35,9 @@ omnetpp_inet_layer/out/
 *.o
 omnetpp_inet_layer/results/**
 !omnetpp_inet_layer/results/**/.gitkeep
+omnetpp_inet_layer_v2/out/
+omnetpp_inet_layer_v2/results/**
+!omnetpp_inet_layer_v2/results/**/.gitkeep
 
 # OS / IDE
 Thumbs.db
