@@ -76,3 +76,31 @@
 - **Phase 6 (`comparison_reports/phase6_tri_layer_benchmark/`, `scripts/run_full_hybrid_pipeline.ps1`)**:
   - Created dynamic tri-layer report generator `generate_tri_layer_report.py` synthesizing `matlab_baseline_metrics.json`, `simpy_*` (`200` runs), and `omnet_*` (`100` runs) into 4 300-DPI PNG figures, `Phase6_TriLayer_Hybrid_Evaluation_Report.md`, and `Phase6_TriLayer_Hybrid_Evaluation_Report.pdf` (verified visually).
   - Created master Windows PowerShell pipeline orchestrator `scripts/run_full_hybrid_pipeline.ps1` with `./DT-HSBP` read-only baseline integrity enforcement across all validation, test, and reporting stages.
+
+## Phase 6.1: Lifespan Sorting Trace Fix, Relay Jitter & 5-Seed CI95 Freeze (`v1.0-trilayer-trace-replay`) (2026-11-22)
+- **Built & Updated**: Enabled `cfg.enableLifespanSorting = true` (`eta = 0.85`) in `matlab_layer/config.m` / `DTHSBP.m` (`41.2%` total trace byte reduction at `N = 250` vs. `HSBP`), added configurable `relayJitterMaxMs = 2.0` stagger timers to `TraceEventPlayer.{ned,h,cc}` eliminating synchronous hidden-terminal self-collisions (`100.00%` `P_sync` at `p_loss = 0.0`), expanded `omnetpp.ini` to `repeat = 5` (`505` `.sca` runs) with Student-t 95% CI aggregation in `parse_omnet_scalars.py`, and regenerated Phase 6 report & figures (`8ef17a0`).
+- **Frozen Tag**: Created annotated Git tag `v1.0-trilayer-trace-replay` cleanly isolating Version 1 before Version 2 development.
+
+## Version 2: Closed-Loop 54 Mbps EDCA, Air-to-Air Rician Fading & Native DT Agents (2026-11-26)
+- **Built**: Created sibling OMNeT++ 6.5.0 / INET 4.7.0 module tree `omnetpp_inet_layer_v2/` on branch `v2-edca-closed-loop`:
+  - `src/V2Payloads.h` (`V2WireHeader` 48B, `HeartbeatDtPacket` 64B `UP=0`, `ChSummaryPacket` 64B `UP=0`, `C2BroadcastPacket` 128B `UP=4`, `KeyResyncPacket` 56B `UP=6`) and `src/DTLogic.h` (`DTKalmanTracker`, `LifespanChainOrder`, `computeRekeyPayloadBytes`, `SeenPacketCache`).
+  - `src/SwarmMobility.{ned,h,cc}` (bounded cluster flight + physical kinematic/energy disturbances), `src/SwarmScenarioManager.{ned,h,cc}` (physical events + passive security auditor), `src/DTHSBPNodeApp.{ned,h,cc}` (in-band `1 Hz` DT telemetry, CH/SL `DTServer`, `5 Hz` encrypted C2, follower/CH `REKEY_UNICAST_ACK`, `KEY_RESYNC_PULL`, SL failover promotion, counter-suppressed relay forwarding), and `src/InetWinCompat.cc` + `src/SafeDcf.ned`.
+  - `simulations/DTHSBPV2SwarmNetwork.ned`, `simulations/omnetpp.ini` (`RicianFading` $K \in \{10, 4, 0\}\text{ dB}$, `Ieee80211NistErrorModel`, `54 Mbps` EDCA `Hcf`/`Edcaf` + DCF ablation), `scripts/build_v2_omnet.ps1`, `src/run_v2_sweep.py`, `src/parse_v2_scalars.py`, `tests/test_v2_dt_logic.cpp`, `tests/test_v2_integration.py`, and `comparison_reports/v2_closed_loop_edca/generate_v2_report.py`.
+- **Tested & Verified**:
+  - Standalone C++17 `test_v2_dt_logic.exe`: **PASS** (`ALL TESTS PASSED`).
+  - Executed **170** unique multi-seed OMNeT++ 6.5.0 / INET 4.7.0 closed-loop runs (`V2_Scalability_54M`, `V2_FadingResilience_54M`, `V2_EDCA_vs_DCF_Ablation`, `repeat = 5`, **0 failures**, **0 MAC queue overflows**) aggregated into **43** CI95 parameter cells (`results/v2_raw_runs.csv`, `results/v2_summary_ci95.csv`, `results/v2_summary_ci95.json`).
+  - Test Suites: `pytest omnetpp_inet_layer_v2/tests -v` (**4/4 PASS**), `pytest omnetpp_inet_layer/tests -v` (**4/4 PASS**), `pytest python_simpy_layer/tests -v` (**20/20 PASS**), `git diff v1.0-trilayer-trace-replay -- omnetpp_inet_layer/` empty, and `./DT-HSBP` verified untouched.
+  - Generated and visually inspected `comparison_reports/v2_closed_loop_edca/v2_closed_loop_edca_report.{md,pdf}` and 4 300-DPI figures (`v2_fig1_scalability_edca.png`, `v2_fig2_fading_resilience.png`, `v2_fig3_security_exposure_dt.png`, `v2_fig4_edca_vs_dcf_ablation.png`). At `N = 250, 54 Mbps, K = 4 dB`, DT-HSBP achieved **39.8%** proactive exclusion, cutting C2 exposure to **3.84 ± 2.35** packets (**83.8%** vs. HSBP, **86.8%** vs. Flat-SBP) and rekey traffic to **59.9 ± 7.9 KB** (**63.7%** vs. HSBP, **77.5%** vs. Flat-SBP) with **99.92% ± 0.02%** C2 decryption success (**99.87% ± 0.04%** at `K = 0 dB` Rayleigh).
+- **Commit**: `6fa76be` (`v2-edca-closed-loop`)
+
+## Version 2.1: `AC_VO`/`AC_VI` Queue Fix, `60s` Multi-Seed Sweeps & Camera-Ready Master Report (2026-11-27)
+- **Built & Updated**:
+  - Updated `omnetpp_inet_layer_v2/src/V2Payloads.h`, `DTHSBPNodeApp.cc`, `simulations/omnetpp.ini`, and `tests/test_v2_dt_logic.cpp` to separate CH/SL rekey broadcasts (`UP = 6`, `AC_VO`, `cwMin=7, cwMax=31`) from follower `REKEY_UNICAST_ACK` & `KEY_RESYNC_PULL` (`UP = 4`, `AC_VI`, `cwMin=15, cwMax=127`, `[0.4, 10.0 ms]` ACK jitter) and extend `V2_Scalability_54M`, `V2_FadingResilience_54M`, and `V2_EDCA_vs_DCF_Ablation` to `60s` (`+30` reserve slots).
+  - Updated `omnetpp_inet_layer_v2/tests/test_v2_integration.py` (`test_edca_no_ac_vo_contention_inversion`) and `comparison_reports/v2_closed_loop_edca/generate_v2_report.py` (non-negative clamped CI error bars + 3 methodological notes).
+  - Created `comparison_reports/camera_ready_master_report/generate_camera_ready_master_report.py` synthesizing Tier 1 (MATLAB `N = 1,000..5,000`), Tier 2 (V1 tri-layer `N = 50..250`), and Tier 3 (V2 closed-loop `60s` `N = 50..250`) into `Camera_Ready_Master_Evaluation_Report.{md,pdf}`.
+- **Tested & Verified**:
+  - `test_v2_dt_logic.exe`: **PASS**.
+  - Completed all **170 × `60s`** unique OMNeT++ 6.5.0 / INET 4.7.0 runs (**0 failures**, **0 MAC queue overflows**) -> `43` 95% Student-t CI cells.
+  - All pytest suites pass: `python_simpy_layer/tests` (**20/20 PASS**), `omnetpp_inet_layer/tests` (**4/4 PASS**), `omnetpp_inet_layer_v2/tests` (**5/5 PASS**); `git diff v1.0-trilayer-trace-replay -- omnetpp_inet_layer/` empty and `../DT-HSBP` untouched.
+  - At `N = 250, 54 Mbps, K = 4 dB` (`60s`), `DT-HSBP` achieved **48.3%** proactive exclusion, **`29.4 ± 7.6 ms`** EDCA rekey completion (faster than DCF **`34.4 ± 11.4 ms`**), **`122.0 ± 8.5 KB`** rekey bytes (**-34.0%** vs. HSBP, **-86.1%** vs. Flat-SBP), **`4.77 ± 0.94`** C2 exposure packets (**-84.9%** vs. HSBP, **-85.3%** vs. Flat-SBP), and **`99.89% ± 0.06%`** C2 decryption (**`99.85% ± 0.06%`** at `K = 0 dB`).
+- **Commit**: `047dcab` (`v2-edca-closed-loop`)
