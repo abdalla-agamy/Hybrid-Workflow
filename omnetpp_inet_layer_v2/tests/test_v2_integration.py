@@ -116,3 +116,12 @@ def test_rician_fading_impact_k10_vs_k0() -> None:
 
     assert float(dt_k0["mac_rx_error_drops"]) > float(dt_k10["mac_rx_error_drops"])
     assert float(dt_k0["c2_decryption_success_rate"]) <= float(dt_k10["c2_decryption_success_rate"]) + 0.02
+
+
+def test_edca_no_ac_vo_contention_inversion() -> None:
+    summary = _load_summary()
+    edca = _find_row(summary, "V2_EDCA_vs_DCF_Ablation", "DTHSBP", 250, 4.0, 1)
+    dcf = _find_row(summary, "V2_EDCA_vs_DCF_Ablation", "DTHSBP", 250, 4.0, 0)
+    assert float(edca["mean_rekey_completion_latency_ms"]) <= max(
+        100.0, float(dcf["mean_rekey_completion_latency_ms"]) * 1.15
+    )

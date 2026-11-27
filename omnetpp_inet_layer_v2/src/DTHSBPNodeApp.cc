@@ -1134,7 +1134,7 @@ void DTHSBPNodeApp::scheduleAckReply(int destSlotIdx, uint32_t roundId, uint64_t
     if (!active_ || destSlotIdx < 0 || destSlotIdx == slotIdx_) {
         return;
     }
-    const double maxJitterSec = (manager_->getProtoKind() == ProtoKind::FLAT_SBP) ? 0.014 : 0.006;
+    const double maxJitterSec = (manager_->getProtoKind() == ProtoKind::FLAT_SBP) ? 0.016 : 0.010;
     const double delaySec = uniform(0.0004, maxJitterSec);
     auto* msg = new AckDelayMsg("AckReplyDelay", TIMER_ACK_TX);
     msg->destSlotIdx = destSlotIdx;

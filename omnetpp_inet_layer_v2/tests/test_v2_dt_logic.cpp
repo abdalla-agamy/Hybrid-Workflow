@@ -16,10 +16,10 @@ int main() {
     static_assert(sizeof(C2BroadcastPacket) == 128, "C2BroadcastPacket == 128 B");
     static_assert(sizeof(KeyResyncPacket) == 56, "KeyResyncPacket == 56 B");
 
-    // 2. Verify EDCA UP mapping
+    // 2. Verify EDCA UP mapping (AC_VO reserved for rekey broadcasts; ACKs/Resync share AC_VI)
     assert(userPriorityForMsg(MsgKind::REKEY_BCAST_FRAG) == 6);
-    assert(userPriorityForMsg(MsgKind::REKEY_UNICAST_ACK) == 6);
-    assert(userPriorityForMsg(MsgKind::KEY_RESYNC_PULL) == 6);
+    assert(userPriorityForMsg(MsgKind::REKEY_UNICAST_ACK) == 4);
+    assert(userPriorityForMsg(MsgKind::KEY_RESYNC_PULL) == 4);
     assert(userPriorityForMsg(MsgKind::MISSION_C2_BCAST) == 4);
     assert(userPriorityForMsg(MsgKind::HEARTBEAT_DT_REPORT) == 0);
     assert(userPriorityForMsg(MsgKind::CH_SUMMARY_TO_SL) == 0);

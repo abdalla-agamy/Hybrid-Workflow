@@ -87,11 +87,11 @@ static_assert(sizeof(KeyResyncPacket) == 56, "KeyResyncPacket must remain 56 byt
 inline int userPriorityForMsg(MsgKind kind) {
     switch (kind) {
         case MsgKind::REKEY_BCAST_FRAG:
+            return 6; // AC_VO exclusively for CH/SL rekey broadcasts & SL failover
         case MsgKind::REKEY_UNICAST_ACK:
         case MsgKind::KEY_RESYNC_PULL:
-            return 6; // AC_VO
         case MsgKind::MISSION_C2_BCAST:
-            return 4; // AC_VI
+            return 4; // AC_VI for Mission C2 + follower ACKs + key resync pulls
         case MsgKind::HEARTBEAT_DT_REPORT:
         case MsgKind::CH_SUMMARY_TO_SL:
         default:
