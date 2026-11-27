@@ -92,3 +92,15 @@
   - Test Suites: `pytest omnetpp_inet_layer_v2/tests -v` (**4/4 PASS**), `pytest omnetpp_inet_layer/tests -v` (**4/4 PASS**), `pytest python_simpy_layer/tests -v` (**20/20 PASS**), `git diff v1.0-trilayer-trace-replay -- omnetpp_inet_layer/` empty, and `./DT-HSBP` verified untouched.
   - Generated and visually inspected `comparison_reports/v2_closed_loop_edca/v2_closed_loop_edca_report.{md,pdf}` and 4 300-DPI figures (`v2_fig1_scalability_edca.png`, `v2_fig2_fading_resilience.png`, `v2_fig3_security_exposure_dt.png`, `v2_fig4_edca_vs_dcf_ablation.png`). At `N = 250, 54 Mbps, K = 4 dB`, DT-HSBP achieved **39.8%** proactive exclusion, cutting C2 exposure to **3.84 ± 2.35** packets (**83.8%** vs. HSBP, **86.8%** vs. Flat-SBP) and rekey traffic to **59.9 ± 7.9 KB** (**63.7%** vs. HSBP, **77.5%** vs. Flat-SBP) with **99.92% ± 0.02%** C2 decryption success (**99.87% ± 0.04%** at `K = 0 dB` Rayleigh).
 - **Commit**: `6fa76be` (`v2-edca-closed-loop`)
+
+## Version 2.1: `AC_VO`/`AC_VI` Queue Fix, `60s` Multi-Seed Sweeps & Camera-Ready Master Report (2026-11-27)
+- **Built & Updated**:
+  - Updated `omnetpp_inet_layer_v2/src/V2Payloads.h`, `DTHSBPNodeApp.cc`, `simulations/omnetpp.ini`, and `tests/test_v2_dt_logic.cpp` to separate CH/SL rekey broadcasts (`UP = 6`, `AC_VO`, `cwMin=7, cwMax=31`) from follower `REKEY_UNICAST_ACK` & `KEY_RESYNC_PULL` (`UP = 4`, `AC_VI`, `cwMin=15, cwMax=127`, `[0.4, 10.0 ms]` ACK jitter) and extend `V2_Scalability_54M`, `V2_FadingResilience_54M`, and `V2_EDCA_vs_DCF_Ablation` to `60s` (`+30` reserve slots).
+  - Updated `omnetpp_inet_layer_v2/tests/test_v2_integration.py` (`test_edca_no_ac_vo_contention_inversion`) and `comparison_reports/v2_closed_loop_edca/generate_v2_report.py` (non-negative clamped CI error bars + 3 methodological notes).
+  - Created `comparison_reports/camera_ready_master_report/generate_camera_ready_master_report.py` synthesizing Tier 1 (MATLAB `N = 1,000..5,000`), Tier 2 (V1 tri-layer `N = 50..250`), and Tier 3 (V2 closed-loop `60s` `N = 50..250`) into `Camera_Ready_Master_Evaluation_Report.{md,pdf}`.
+- **Tested & Verified**:
+  - `test_v2_dt_logic.exe`: **PASS**.
+  - Completed all **170 × `60s`** unique OMNeT++ 6.5.0 / INET 4.7.0 runs (**0 failures**, **0 MAC queue overflows**) -> `43` 95% Student-t CI cells.
+  - All pytest suites pass: `python_simpy_layer/tests` (**20/20 PASS**), `omnetpp_inet_layer/tests` (**4/4 PASS**), `omnetpp_inet_layer_v2/tests` (**5/5 PASS**); `git diff v1.0-trilayer-trace-replay -- omnetpp_inet_layer/` empty and `../DT-HSBP` untouched.
+  - At `N = 250, 54 Mbps, K = 4 dB` (`60s`), `DT-HSBP` achieved **48.3%** proactive exclusion, **`29.4 ± 7.6 ms`** EDCA rekey completion (faster than DCF **`34.4 ± 11.4 ms`**), **`122.0 ± 8.5 KB`** rekey bytes (**-34.0%** vs. HSBP, **-86.1%** vs. Flat-SBP), **`4.77 ± 0.94`** C2 exposure packets (**-84.9%** vs. HSBP, **-85.3%** vs. Flat-SBP), and **`99.89% ± 0.06%`** C2 decryption (**`99.85% ± 0.06%`** at `K = 0 dB`).
+- **Commit**: `047dcab` (`v2-edca-closed-loop`)
